@@ -1,0 +1,41 @@
+<!--index.wxml-->
+<text style="position: relative; left: 270rpx; top: 55rpx; width: 453rpx; display: block; box-sizing: border-box; height: 40rpx">机小智智友会</text>
+<scroll-view class="scrollarea" scroll-y type="list" style="height: 1327rpx; display: block; box-sizing: content-box">
+    <view class="container" style="position: relative; left: 0rpx; top: 46rpx; height: 1296rpx; display: flex; box-sizing: border-box">
+        <view class="userinfo">
+
+            <!-- 头像选择 -->
+            <button 
+            class="avatar-wrapper" 
+            open-type="chooseAvatar" 
+            bind:chooseavatar="onChooseAvatar"
+            >
+            <image 
+                class="avatar" 
+                src="{{userInfo.avatarUrl}}" 
+                mode="aspectFill"
+            ></image>
+            </button>
+
+            <!-- 昵称输入 -->
+            <view class="nickname-wrapper">
+            <text class="nickname-label">昵称</text>
+            <input 
+                class="nickname-input" 
+                placeholder="请输入昵称" 
+                value="{{userInfo.nickName}}"
+                bindinput="onInputChange"
+            />
+            </view>
+
+            </view>
+            <button bindtap="handleLogin" class="login-btn">
+                登录
+            </button>
+        <view class="usermotto">
+            <text class="user-motto">{{motto}}</text>
+        </view>
+    </view>
+
+    
+</scroll-view>

@@ -1,0 +1,14 @@
+<!--pages/publish/publish.wxml-->
+<view class="container">
+
+<textarea 
+  placeholder="说点什么吧..."
+  bindinput="onInput"
+  class="input-box"
+/>
+
+<button class="submit-btn" bindtap="submitPost">
+  发布
+</button>
+
+</view>

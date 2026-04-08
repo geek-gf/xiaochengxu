@@ -1,0 +1,40 @@
+/* 固定导航栏 */
+.weui-navigation-bar {
+    position: fixed;
+    top: 0; /* 或 bottom: 0 作为底部导航 */
+    left: 0;
+    width: 100%;
+    height: 120rpx;
+    z-index: 999;
+    background: #1677ff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20rpx;
+    box-sizing: border-box;
+  }
+  
+  /* 左/中/右 */
+  .weui-navigation-bar__left,
+  .weui-navigation-bar__center,
+  .weui-navigation-bar__right {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* 中间标题 */
+  .weui-navigation-bar__center {
+    flex: 1;
+    text-align: center;
+    font-size: 32rpx;
+    color: #fff;
+  }
+  
+  /* 按钮 */
+  .weui-navigation-bar__btn_goback,
+  .weui-navigation-bar__btn_home {
+    width: 40rpx;
+    height: 40rpx;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }

@@ -1,0 +1,4 @@
+<!--pages/menu/menu.wxml-->
+<view>
+    <text>hello</text>
+</view>

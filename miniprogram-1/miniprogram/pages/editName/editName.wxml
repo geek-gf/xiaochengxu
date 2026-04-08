@@ -1,0 +1,15 @@
+<!--pages/editName/editName.wxml-->
+<view class="container">
+
+<view class="title">修改昵称</view>
+
+<input 
+  class="input"
+  placeholder="请输入昵称（2-10个字符）"
+  value="{{nickName}}"
+  bindinput="onInput"
+/>
+
+<button class="btn" bindtap="save">保存</button>
+
+</view>
