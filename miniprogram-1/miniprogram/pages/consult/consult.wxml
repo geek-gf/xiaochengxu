@@ -1,2 +1,27 @@
-<!--pages/consult/consult.wxml-->
-<text>pages/consult/consult.wxml</text>
+<view class="page">
+  <view class="header">
+    <text class="title">咨询专家</text>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{consultants.length === 0 && !loading}}" class="empty-tip">
+      暂无专家入驻~
+    </view>
+
+    <block wx:for="{{consultants}}" wx:key="_id">
+      <view class="card" bindtap="goDetail" data-id="{{item._id}}">
+        <image class="avatar" src="{{item.avatar}}" mode="aspectFill"></image>
+        <view class="info">
+          <view class="expert-name">{{item.name}}</view>
+          <view class="expert-title">{{item.title}}</view>
+          <view class="expert-intro">{{item.intro}}</view>
+        </view>
+        <view class="arrow">›</view>
+      </view>
+    </block>
+
+    <view class="load-more">
+      <text wx:if="{{loading}}">加载中...</text>
+    </view>
+  </view>
+</view>

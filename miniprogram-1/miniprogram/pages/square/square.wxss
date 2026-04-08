@@ -3,7 +3,7 @@
     min-height: 100vh;
 }
 .container1 {
-    min-height: 180vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;

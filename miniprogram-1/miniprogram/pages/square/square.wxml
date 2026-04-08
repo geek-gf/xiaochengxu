@@ -9,7 +9,7 @@
 <view class="content">
   <block wx:for="{{postList}}" wx:key="_id">
     
-    <view class="card">
+    <view class="card" bindtap="goPostDetail" data-id="{{item._id}}">
 
       <!-- 用户信息 -->
       <view class="user-row">
@@ -37,7 +37,6 @@
   </view>
 
 </view>
-<view style="height: 2000rpx; background: red;"></view>
 <!-- 悬浮发布按钮 -->
 <view class="publish-btn" bindtap="goPublish">
   +

@@ -1,0 +1,48 @@
+<view class="page">
+  <!-- 顶部 -->
+  <view class="header">
+    <text class="title">帖子详情</text>
+  </view>
+
+  <!-- 帖子内容 -->
+  <view class="post-card" wx:if="{{post}}">
+    <view class="user-row">
+      <image class="avatar" src="{{post.avatarUrl}}" mode="aspectFill"></image>
+      <view class="user-info">
+        <text class="nickname">{{post.nickName}}</text>
+        <text class="time">{{post.timeAgo}}</text>
+      </view>
+    </view>
+    <view class="post-content">{{post.content}}</view>
+  </view>
+
+  <!-- 评论区标题 -->
+  <view class="section-title">评论 ({{commentList.length}})</view>
+
+  <!-- 评论列表 -->
+  <view class="comment-list">
+    <view class="comment-item" wx:for="{{commentList}}" wx:key="_id">
+      <image class="avatar-sm" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+      <view class="comment-body">
+        <text class="comment-nick">{{item.nickName}}</text>
+        <text class="comment-content">{{item.content}}</text>
+        <text class="comment-time">{{item.timeAgo}}</text>
+      </view>
+    </view>
+    <view wx:if="{{commentList.length === 0 && !loading}}" class="empty-tip">暂无评论，快来评论吧~</view>
+    <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+  </view>
+
+  <!-- 底部评论输入框 -->
+  <view class="comment-footer">
+    <input
+      class="comment-input"
+      placeholder="写下你的评论..."
+      value="{{commentContent}}"
+      bindinput="onCommentInput"
+      confirm-type="send"
+      bindconfirm="submitComment"
+    />
+    <view class="send-btn" bindtap="submitComment">发送</view>
+  </view>
+</view>

@@ -9,11 +9,9 @@ Page({
     data: {
         postList: [] as Post[],
         page: 0,
-        showNoMore: false,         
-        pageSize: 10,     // 每页数量
-        loading: false,   // 是否加载中
+        pageSize: 10,
+        loading: false,
         noMore: false,
-        testContent: ''
       },
       formatTimeAgo(date: any) {
         const now = Date.now()
@@ -32,7 +30,6 @@ Page({
       },
   onLoad() {
     this.getPosts(false)
-    this.testDB() 
     const windowInfo = wx.getWindowInfo()
     this.setData({
         statusBarHeight: windowInfo.statusBarHeight
@@ -40,7 +37,7 @@ Page({
   },
 
   onShow() {
-        this.getPosts(false)  // 自动重置
+    this.getPosts(false)
   },
   onReachBottom() {
     this.getPosts(true)
@@ -49,30 +46,12 @@ Page({
     await this.getPosts(false)
     wx.stopPullDownRefresh()
   },
-  async testDB() {
-    try {
-      const res = await db.collection('post')
-        .limit(1)
-        .get()
-  
-      console.log('测试数据：', res)
-  
-      if (res.data.length > 0) {
-        this.setData({
-          testContent: res.data[0].content || '有数据但没content字段'
-        })
-      } else {
-        this.setData({
-          testContent: '数据库是空的'
-        })
-      }
-  
-    } catch (err) {
-      console.error(err)
-      this.setData({
-        testContent: '读取失败'
-      })
-    }
+
+  goPostDetail(e: any) {
+    const postId = e.currentTarget.dataset.id
+    wx.navigateTo({
+      url: `/pages/postDetail/postDetail?postId=${postId}`
+    })
   },
 
   async getPosts(isLoadMore = false) {

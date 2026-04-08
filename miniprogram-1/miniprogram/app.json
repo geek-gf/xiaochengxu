@@ -9,7 +9,12 @@
         "pages/menu/menu",
         "pages/publish/publish",
         "pages/logs/logs",
-        "pages/home/home"
+        "pages/home/home",
+        "pages/postDetail/postDetail",
+        "pages/myPosts/myPosts",
+        "pages/myHelp/myHelp",
+        "pages/publishHelp/publishHelp",
+        "pages/consultDetail/consultDetail"
     ],
     "window": {
       "navigationBarTextStyle": "black",

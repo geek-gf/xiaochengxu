@@ -1,0 +1,66 @@
+<view class="page">
+  <!-- 专家信息 -->
+  <view class="profile-card" wx:if="{{consultant}}">
+    <image class="avatar" src="{{consultant.avatar}}" mode="aspectFill"></image>
+    <view class="expert-name">{{consultant.name}}</view>
+    <view class="expert-title">{{consultant.title}}</view>
+    <view class="expert-intro">{{consultant.intro}}</view>
+  </view>
+
+  <!-- 问题区标题 -->
+  <view class="section-title">提问区 ({{questions.length}})</view>
+
+  <!-- 问题列表 -->
+  <view class="question-list">
+    <view class="question-item" wx:for="{{questions}}" wx:key="_id">
+      <!-- 提问者 -->
+      <view class="asker-row">
+        <image class="avatar-sm" src="{{item.askerAvatar}}" mode="aspectFill"></image>
+        <view class="asker-body">
+          <text class="asker-name">{{item.askerName}}</text>
+          <text class="q-time">{{item.timeAgo}}</text>
+        </view>
+      </view>
+      <view class="q-content">{{item.content}}</view>
+
+      <!-- 已有回答 -->
+      <view class="answer-block" wx:if="{{item.answer}}">
+        <text class="answer-label">专家回答：</text>
+        <text class="answer-text">{{item.answer}}</text>
+      </view>
+
+      <!-- 专家回答入口（仅专家本人可见） -->
+      <view wx:if="{{isConsultant}}">
+        <view class="reply-btn" bindtap="toggleAnswerInput" data-index="{{index}}">
+          {{item.showAnswerInput ? '收起' : (item.answer ? '修改回答' : '回答')}}
+        </view>
+        <view wx:if="{{item.showAnswerInput}}" class="answer-input-area">
+          <textarea
+            class="answer-textarea"
+            placeholder="输入你的回答..."
+            value="{{item.answerDraft}}"
+            bindinput="onAnswerInput"
+            data-index="{{index}}"
+          />
+          <view class="answer-submit-btn" bindtap="submitAnswer" data-index="{{index}}">提交回答</view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{questions.length === 0 && !loading}}" class="empty-tip">暂无问题，快来提问吧~</view>
+    <view wx:if="{{loading}}" class="loading-tip">加载中...</view>
+  </view>
+
+  <!-- 底部提问框（非专家用户） -->
+  <view class="question-footer" wx:if="{{!isConsultant}}">
+    <input
+      class="question-input"
+      placeholder="向专家提问..."
+      value="{{questionContent}}"
+      bindinput="onQuestionInput"
+      confirm-type="send"
+      bindconfirm="submitQuestion"
+    />
+    <view class="send-btn" bindtap="submitQuestion">提问</view>
+  </view>
+</view>

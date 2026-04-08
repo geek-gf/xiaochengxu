@@ -36,6 +36,7 @@ Page({
             content: this.data.content,
             avatarUrl: userInfo.avatarUrl,
             nickName: userInfo.nickName,
+            openid: userInfo.openid || '',
             createTime: new Date()
           }
         })

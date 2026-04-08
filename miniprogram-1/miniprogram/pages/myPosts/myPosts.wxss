@@ -1,4 +1,4 @@
-/* pages/consult/consult.wxss */
+/* pages/myPosts/myPosts.wxss */
 .page {
   min-height: 100vh;
   background: #f5f6f7;
@@ -28,52 +28,47 @@
 }
 
 .card {
-  display: flex;
-  align-items: center;
   background: #fff;
   border-radius: 24rpx;
-  padding: 30rpx;
+  padding: 25rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
 }
 
+.user-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15rpx;
+}
+
 .avatar {
-  width: 100rpx;
-  height: 100rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
-  margin-right: 24rpx;
-  flex-shrink: 0;
+  margin-right: 20rpx;
 }
 
-.info {
-  flex: 1;
+.user-info {
+  display: flex;
+  flex-direction: column;
 }
 
-.expert-name {
-  font-size: 32rpx;
-  font-weight: bold;
-  color: #222;
-  margin-bottom: 6rpx;
+.nickname {
+  font-size: 30rpx;
+  font-weight: 600;
 }
 
-.expert-title {
-  font-size: 24rpx;
-  color: #1677ff;
-  margin-bottom: 8rpx;
+.time {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 6rpx;
 }
 
-.expert-intro {
-  font-size: 26rpx;
-  color: #666;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  overflow: hidden;
-}
-
-.arrow {
-  font-size: 40rpx;
-  color: #ccc;
-  margin-left: 10rpx;
+.post-content {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.7;
+  white-space: pre-wrap;
 }
 
 .empty-tip {
