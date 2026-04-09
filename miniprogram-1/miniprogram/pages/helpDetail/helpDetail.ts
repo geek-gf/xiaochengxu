@@ -52,6 +52,10 @@ Page({
     this.setData({ loading: true })
     try {
       const res = await helpDetailDb.collection('helpRequest').doc(id).get()
+      if (!res.data) {
+        wx.showToast({ title: '求助不存在', icon: 'none' })
+        return
+      }
       let item = res.data as HelpRequest
 
       if (item.publisherAvatar && item.publisherAvatar.startsWith('cloud://')) {
@@ -74,7 +78,7 @@ Page({
     const item = this.data.item
     if (!item) return
     const userInfo = wx.getStorageSync('userInfo')
-    if (!userInfo) {
+    if (!userInfo || !userInfo.openid) {
       wx.showToast({ title: '请先登录', icon: 'none' })
       return
     }
@@ -84,7 +88,7 @@ Page({
       await helpDetailDb.collection('helpRequest').doc(item._id).update({
         data: {
           status: 'ongoing',
-          acceptorId: userInfo.openid || userInfo.nickName
+          acceptorId: userInfo.openid
         }
       })
       wx.showToast({ title: '已接下求助' })

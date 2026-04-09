@@ -33,7 +33,7 @@ Page({
       },
   onLoad() {
     const windowInfo = wx.getWindowInfo()
-    const statusBarHeight = windowInfo.statusBarHeight
+    const statusBarHeight = windowInfo.statusBarHeight || 0
     // header is 140rpx tall; 140rpx = 140/750 * screenWidth px
     const headerRpxHeight = 140
     const rpxToPx = windowInfo.screenWidth / 750
