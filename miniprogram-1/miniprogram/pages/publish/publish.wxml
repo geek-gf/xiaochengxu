@@ -1,7 +1,7 @@
 <!--pages/publish/publish.wxml-->
 <view class="container">
 
-<view class="page-header">
+<view class="page-header" style="padding-top: {{statusBarHeight}}px;">
   <view class="back-btn" bindtap="goBack">‹</view>
   <text class="page-title">发帖</text>
 </view>

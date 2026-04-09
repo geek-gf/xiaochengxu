@@ -18,7 +18,8 @@ Page({
   data: {
     list: [] as HelpRequest[],
     loading: false,
-    currentOpenid: ''
+    currentOpenid: '',
+    statusBarHeight: 0
   },
 
   formatTimeAgo(date: any) {
@@ -35,6 +36,8 @@ Page({
   },
 
   onLoad() {
+    const windowInfo = wx.getWindowInfo()
+    this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
       this.setData({ currentOpenid: userInfo.openid || '' })
@@ -96,6 +99,20 @@ Page({
       return
     }
 
+    if (!userInfo.isVerified) {
+      wx.showModal({
+        title: '需要认证',
+        content: '接受求助需要完成个人信息认证，请前往"我的"页面完成认证',
+        confirmText: '去认证',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({ url: '/pages/profile/profile' })
+          }
+        }
+      })
+      return
+    }
+
     wx.showLoading({ title: '接受中...' })
     try {
       await helpDb.collection('helpRequest').doc(id).update({
@@ -135,6 +152,20 @@ Page({
   },
 
   goPublishHelp() {
+    const userInfo = wx.getStorageSync('userInfo')
+    if (!userInfo || !userInfo.isVerified) {
+      wx.showModal({
+        title: '需要认证',
+        content: '发布求助需要完成个人信息认证，请前往"我的"页面完成认证',
+        confirmText: '去认证',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({ url: '/pages/profile/profile' })
+          }
+        }
+      })
+      return
+    }
     wx.navigateTo({ url: '/pages/publishHelp/publishHelp' })
   },
 

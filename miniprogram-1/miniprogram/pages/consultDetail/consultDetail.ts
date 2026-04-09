@@ -136,6 +136,20 @@ Page({
       return
     }
 
+    if (!userInfo.isVerified) {
+      wx.showModal({
+        title: '需要认证',
+        content: '提问功能需要完成个人信息认证，请前往"我的"页面完成认证',
+        confirmText: '去认证',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({ url: '/pages/profile/profile' })
+          }
+        }
+      })
+      return
+    }
+
     this.setData({ submitting: true })
     wx.showLoading({ title: '提交中...' })
 
