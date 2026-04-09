@@ -1,66 +1,62 @@
 // pages/consult/consult.ts
+const db = wx.cloud.database()
+
+type Consultant = {
+  _id: string
+  name: string
+  avatar: string
+  title: string
+  intro: string
+  openid: string
+}
+
 Page({
-
-  /**
-   * 页面的初始数据
-   */
   data: {
-
+    consultants: [] as Consultant[],
+    loading: false
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad() {
-
+    this.loadConsultants()
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
   onShow() {
-
+    this.loadConsultants()
   },
 
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
+  async onPullDownRefresh() {
+    await this.loadConsultants()
+    wx.stopPullDownRefresh()
   },
 
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
+  async loadConsultants() {
+    this.setData({ loading: true })
+    try {
+      const res = await db.collection('consultant').limit(50).get()
+      let list = res.data as Consultant[]
 
+      const cloudUrls = list.map(c => c.avatar).filter(url => url && url.startsWith('cloud://'))
+      if (cloudUrls.length > 0) {
+        const tempRes = await wx.cloud.getTempFileURL({ fileList: cloudUrls })
+        const urlMap: Record<string, string> = {}
+        tempRes.fileList.forEach((f: any) => { urlMap[f.fileID] = f.tempFileURL })
+        list = list.map(c => ({
+          ...c,
+          avatar: urlMap[c.avatar] && urlMap[c.avatar].startsWith('https')
+            ? urlMap[c.avatar]
+            : '/pages/images/1.png'
+        }))
+      }
+
+      this.setData({ consultants: list })
+    } catch (err) {
+      wx.showToast({ title: '加载失败', icon: 'none' })
+    }
+    this.setData({ loading: false })
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
+  goDetail(e: any) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: `/pages/consultDetail/consultDetail?consultantId=${id}` })
   }
 })

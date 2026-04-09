@@ -87,7 +87,7 @@ Page({
       },
     goHelp() {
       wx.navigateTo({
-        url: '/pages/help/help'
+        url: '/pages/myHelp/myHelp'
       })
     }
   })

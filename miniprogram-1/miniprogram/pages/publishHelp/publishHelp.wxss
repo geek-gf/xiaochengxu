@@ -1,0 +1,46 @@
+/* pages/publishHelp/publishHelp.wxss */
+.container {
+  padding: 40rpx 30rpx;
+}
+
+.form-group {
+  margin-bottom: 40rpx;
+}
+
+.label {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.input-box {
+  width: 100%;
+  height: 88rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.textarea-box {
+  width: 100%;
+  height: 260rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.submit-btn {
+  background: #1677ff;
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 32rpx;
+  margin-top: 20rpx;
+}
