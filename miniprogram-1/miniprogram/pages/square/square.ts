@@ -98,23 +98,16 @@ Page({
         timeAgo: this.formatTimeAgo(item.createTime)
       }))
   
-      // 👉 头像处理
-      const fileList = newList.map(item => item.avatarUrl)
-  
-      if (fileList.length > 0) {
-        const tempRes = await wx.cloud.getTempFileURL({ fileList })
-  
-        newList = newList.map((item, index) => {
-          const file = tempRes.fileList[index]
-          const tempUrl = file && file.tempFileURL
-  
-          return {
-            ...item,
-            avatarUrl: tempUrl && tempUrl.startsWith('https')
-              ? tempUrl
-              : '/images/1.png'
-          }
-        })
+      // 👉 头像处理（只转换 cloud:// 格式的 fileID）
+      const cloudUrls = newList.map(item => item.avatarUrl).filter(url => url && url.startsWith('cloud://'))
+      if (cloudUrls.length > 0) {
+        const tempRes = await wx.cloud.getTempFileURL({ fileList: cloudUrls })
+        const urlMap: Record<string, string> = {}
+        tempRes.fileList.forEach((f: any) => { urlMap[f.fileID] = f.tempFileURL })
+        newList = newList.map(item => ({
+          ...item,
+          avatarUrl: urlMap[item.avatarUrl] || (item.avatarUrl && item.avatarUrl.startsWith('https') ? item.avatarUrl : '/images/1.png')
+        }))
       }
   
       // 👉 最后更新数据
