@@ -27,7 +27,7 @@
           maxlength="500"
           auto-height
         />
-        <view class="char-count">{{description.length}}/500</view>
+        <view class="char-count">{{description ? description.length : 0}}/500</view>
       </view>
     </view>
   </view>

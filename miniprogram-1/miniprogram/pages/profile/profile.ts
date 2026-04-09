@@ -87,6 +87,8 @@ Page({
         const userInfo = wx.getStorageSync('userInfo')
         if (userInfo) {
           this.setData({ userInfo })
+        } else {
+          this.setData({ userInfo: { avatarUrl: '', nickName: '', isVerified: false } })
         }
       },
     goHelp() {
