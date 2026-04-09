@@ -1,5 +1,5 @@
 // pages/consult/consult.ts
-const db = wx.cloud.database()
+const consultDb = wx.cloud.database()
 
 type Consultant = {
   _id: string
@@ -32,7 +32,7 @@ Page({
   async loadConsultants() {
     this.setData({ loading: true })
     try {
-      const res = await db.collection('consultant').limit(50).get()
+      const res = await consultDb.collection('consultant').limit(50).get()
       let list = res.data as Consultant[]
 
       const cloudUrls = list.map(c => c.avatar).filter(url => url && url.startsWith('cloud://'))

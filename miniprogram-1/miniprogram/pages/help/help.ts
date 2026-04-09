@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const helpDb = wx.cloud.database()
 
 type HelpRequest = {
   _id: string
@@ -53,8 +53,8 @@ Page({
   async loadList() {
     this.setData({ loading: true })
     try {
-      const res = await db.collection('helpRequest')
-        .where(db.command.neq('status', 'done'))
+      const res = await helpDb.collection('helpRequest')
+        .where({ status: helpDb.command.neq('done') })
         .orderBy('createTime', 'desc')
         .limit(50)
         .get()
@@ -81,6 +81,7 @@ Page({
 
       this.setData({ list })
     } catch (err) {
+      console.error('loadList error:', err)
       wx.showToast({ title: '加载失败', icon: 'none' })
     }
     this.setData({ loading: false })
@@ -96,7 +97,7 @@ Page({
 
     wx.showLoading({ title: '接受中...' })
     try {
-      await db.collection('helpRequest').doc(id).update({
+      await helpDb.collection('helpRequest').doc(id).update({
         data: {
           status: 'ongoing',
           acceptorId: userInfo.openid || userInfo.nickName
@@ -119,7 +120,7 @@ Page({
         if (!res.confirm) return
         wx.showLoading({ title: '处理中...' })
         try {
-          await db.collection('helpRequest').doc(id).update({
+          await helpDb.collection('helpRequest').doc(id).update({
             data: { status: 'done' }
           })
           wx.showToast({ title: '已完成' })

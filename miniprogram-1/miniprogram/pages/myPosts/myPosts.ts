@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const myPostsDb = wx.cloud.database()
 
 type Post = {
   _id: string
@@ -69,8 +69,8 @@ Page({
     try {
       // Filter by openid if available, otherwise by nickName
       const query = userInfo.openid
-        ? db.collection('post').where({ openid: userInfo.openid })
-        : db.collection('post').where({ nickName: userInfo.nickName })
+        ? myPostsDb.collection('post').where({ openid: userInfo.openid })
+        : myPostsDb.collection('post').where({ nickName: userInfo.nickName })
 
       const res = await query
         .orderBy('createTime', 'desc')

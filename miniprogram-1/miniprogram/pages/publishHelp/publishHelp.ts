@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const publishHelpDb = wx.cloud.database()
 
 Page({
   data: {
@@ -36,7 +36,7 @@ Page({
     wx.showLoading({ title: '发布中...' })
 
     try {
-      await db.collection('helpRequest').add({
+      await publishHelpDb.collection('helpRequest').add({
         data: {
           title,
           description,
