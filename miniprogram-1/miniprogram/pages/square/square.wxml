@@ -5,10 +5,19 @@
   <text class="title">机小智智友会</text>
 </view>
 
-<!-- 列表内容 -->
-<view class="content" style="padding-top: {{contentPaddingTop}}px;">
+<!-- 列表内容（scroll-view 无限滚动 + 下拉刷新） -->
+<scroll-view
+  class="content"
+  scroll-y="{{true}}"
+  lower-threshold="120"
+  bindscrolltolower="onScrollToLower"
+  refresher-enabled="true"
+  refresher-triggered="{{refresherTriggered}}"
+  bindrefresherrefresh="onRefresherRefresh"
+  style="margin-top: {{contentPaddingTop}}px; height: {{scrollHeight}}px;"
+>
   <block wx:for="{{postList}}" wx:key="_id">
-    
+
     <view class="card" bindtap="goPostDetail" data-id="{{item._id}}">
 
       <!-- 用户信息 -->
@@ -36,7 +45,7 @@
     <text wx:elif="{{noMore}}">—— 没有更多了 ——</text>
   </view>
 
-</view>
+</scroll-view>
 <!-- 悬浮发布按钮 -->
 <view class="publish-btn" bindtap="goPublish">
   +
