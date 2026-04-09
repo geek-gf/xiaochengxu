@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const postDetailDb = wx.cloud.database()
 
 type Post = {
   _id: string
@@ -51,16 +51,18 @@ Page({
 
   async loadPost(postId: string) {
     try {
-      const res = await db.collection('post').doc(postId).get()
+      const res = await postDetailDb.collection('post').doc(postId).get()
       let post = res.data as Post
       if (post.avatarUrl && post.avatarUrl.startsWith('cloud://')) {
         const tempRes = await wx.cloud.getTempFileURL({ fileList: [post.avatarUrl] })
-        const tempUrl = tempRes.fileList[0]?.tempFileURL
+        const tempFile = tempRes.fileList[0]
+        const tempUrl = tempFile && tempFile.tempFileURL
         post.avatarUrl = tempUrl && tempUrl.startsWith('https') ? tempUrl : '/pages/images/1.png'
       }
       post.timeAgo = this.formatTimeAgo(post.createTime)
       this.setData({ post })
     } catch (err) {
+      console.error('loadPost error:', err)
       wx.showToast({ title: '帖子加载失败', icon: 'none' })
     }
   },
@@ -68,7 +70,7 @@ Page({
   async loadComments(postId: string) {
     this.setData({ loading: true })
     try {
-      const res = await db.collection('comment')
+      const res = await postDetailDb.collection('comment')
         .where({ postId })
         .orderBy('createTime', 'asc')
         .get()
@@ -123,7 +125,7 @@ Page({
     wx.showLoading({ title: '发送中...' })
 
     try {
-      await db.collection('comment').add({
+      await postDetailDb.collection('comment').add({
         data: {
           postId: this.data.postId,
           content,

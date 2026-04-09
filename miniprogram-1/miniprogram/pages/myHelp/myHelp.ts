@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const myHelpDb = wx.cloud.database()
 
 type HelpRequest = {
   _id: string
@@ -55,7 +55,7 @@ Page({
 
     try {
       const publisherId = userInfo.openid || userInfo.nickName
-      const res = await db.collection('helpRequest')
+      const res = await myHelpDb.collection('helpRequest')
         .where({ publisherId })
         .orderBy('createTime', 'desc')
         .limit(50)

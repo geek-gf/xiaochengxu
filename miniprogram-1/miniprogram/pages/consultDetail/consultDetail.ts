@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const consultDetailDb = wx.cloud.database()
 
 type Consultant = {
   _id: string
@@ -50,7 +50,7 @@ Page({
   onLoad(options: any) {
     const consultantId = options.consultantId
     const userInfo = wx.getStorageSync('userInfo')
-    const currentOpenid = userInfo?.openid || ''
+    const currentOpenid = (userInfo && userInfo.openid) || ''
     this.setData({ consultantId, currentOpenid })
     this.loadConsultant(consultantId, currentOpenid)
     this.loadQuestions(consultantId)
@@ -58,18 +58,20 @@ Page({
 
   async loadConsultant(consultantId: string, currentOpenid: string) {
     try {
-      const res = await db.collection('consultant').doc(consultantId).get()
+      const res = await consultDetailDb.collection('consultant').doc(consultantId).get()
       let consultant = res.data as Consultant
 
       if (consultant.avatar && consultant.avatar.startsWith('cloud://')) {
         const tempRes = await wx.cloud.getTempFileURL({ fileList: [consultant.avatar] })
-        const tempUrl = tempRes.fileList[0]?.tempFileURL
+        const tempFile = tempRes.fileList[0]
+        const tempUrl = tempFile && tempFile.tempFileURL
         consultant.avatar = tempUrl && tempUrl.startsWith('https') ? tempUrl : '/pages/images/1.png'
       }
 
       const isConsultant = !!(currentOpenid && currentOpenid === consultant.openid)
       this.setData({ consultant, isConsultant })
     } catch (err) {
+      console.error('loadConsultant error:', err)
       wx.showToast({ title: '加载专家信息失败', icon: 'none' })
     }
   },
@@ -77,7 +79,7 @@ Page({
   async loadQuestions(consultantId: string) {
     this.setData({ loading: true })
     try {
-      const res = await db.collection('question')
+      const res = await consultDetailDb.collection('question')
         .where({ consultantId })
         .orderBy('createTime', 'desc')
         .limit(50)
@@ -133,7 +135,7 @@ Page({
     wx.showLoading({ title: '提交中...' })
 
     try {
-      await db.collection('question').add({
+      await consultDetailDb.collection('question').add({
         data: {
           consultantId: this.data.consultantId,
           content,
@@ -170,7 +172,7 @@ Page({
   async submitAnswer(e: any) {
     const index = e.currentTarget.dataset.index
     const question = this.data.questions[index]
-    const answer = question.answerDraft?.trim()
+    const answer = (question.answerDraft && question.answerDraft.trim()) || ''
 
     if (!answer) {
       wx.showToast({ title: '回答不能为空', icon: 'none' })
@@ -179,7 +181,7 @@ Page({
 
     wx.showLoading({ title: '提交中...' })
     try {
-      await db.collection('question').doc(question._id).update({
+      await consultDetailDb.collection('question').doc(question._id).update({
         data: { answer }
       })
       wx.showToast({ title: '回答成功' })

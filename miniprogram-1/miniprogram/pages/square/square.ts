@@ -1,4 +1,4 @@
-const db = wx.cloud.database()
+const squareDb = wx.cloud.database()
 type Post = {
   content: string
   avatarUrl: string
@@ -70,7 +70,7 @@ Page({
     }
   
     try {
-      const res = await db.collection('post')
+      const res = await squareDb.collection('post')
         .orderBy('createTime', 'desc')
         .skip(page * pageSize)
         .limit(pageSize)
