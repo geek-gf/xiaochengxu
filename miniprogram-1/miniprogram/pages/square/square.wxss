@@ -37,6 +37,7 @@
     padding-right: 30rpx;
     padding-bottom: 40rpx;
     box-sizing: border-box;
+    overflow-y: hidden;
   }
 /* 卡片 */
 .card {

@@ -15,6 +15,8 @@ Page({
         noMore: false,
         statusBarHeight: 0,
         contentPaddingTop: 0,
+        scrollHeight: 0,
+        refresherTriggered: false,
       },
       formatTimeAgo(date: any) {
         const now = Date.now()
@@ -38,19 +40,26 @@ Page({
     const headerRpxHeight = 140
     const rpxToPx = windowInfo.screenWidth / 750
     const contentPaddingTop = statusBarHeight + Math.round(headerRpxHeight * rpxToPx)
-    this.setData({ statusBarHeight, contentPaddingTop })
+    // scroll-view occupies all visible area below the fixed header
+    const scrollHeight = windowInfo.windowHeight - contentPaddingTop
+    this.setData({ statusBarHeight, contentPaddingTop, scrollHeight })
     this.getPosts(false)
   },
 
   onShow() {
     this.getPosts(false)
   },
-  onReachBottom() {
+
+  /** 触底加载更多 */
+  onScrollToLower() {
     this.getPosts(true)
   },
-  async onPullDownRefresh() {
+
+  /** scroll-view 下拉刷新 */
+  async onRefresherRefresh() {
+    this.setData({ refresherTriggered: true })
     await this.getPosts(false)
-    wx.stopPullDownRefresh()
+    this.setData({ refresherTriggered: false })
   },
 
   goPostDetail(e: any) {
@@ -134,4 +143,5 @@ Page({
     })
   },
 })
+
 
