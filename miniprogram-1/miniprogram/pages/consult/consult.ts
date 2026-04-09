@@ -1,4 +1,5 @@
 // pages/consult/consult.ts
+export {}
 const consultDb = wx.cloud.database()
 
 type Consultant = {

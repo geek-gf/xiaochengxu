@@ -1,4 +1,6 @@
 <view class="page">
+  <!-- 返回按钮 -->
+  <view class="back-btn" bindtap="goBack">‹</view>
   <!-- 专家信息 -->
   <view class="profile-card" wx:if="{{consultant}}">
     <image class="avatar" src="{{consultant.avatar}}" mode="aspectFill"></image>

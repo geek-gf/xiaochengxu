@@ -1,6 +1,7 @@
 <view class="page">
   <!-- 顶部 -->
   <view class="header">
+    <view class="back-btn" bindtap="goBack">‹</view>
     <text class="title">帖子详情</text>
   </view>
 

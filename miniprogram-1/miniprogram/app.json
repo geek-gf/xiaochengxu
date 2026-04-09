@@ -14,7 +14,8 @@
         "pages/myPosts/myPosts",
         "pages/myHelp/myHelp",
         "pages/publishHelp/publishHelp",
-        "pages/consultDetail/consultDetail"
+        "pages/consultDetail/consultDetail",
+        "pages/helpDetail/helpDetail"
     ],
     "window": {
       "navigationBarTextStyle": "black",

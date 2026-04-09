@@ -1,3 +1,4 @@
+export {}
 const consultDetailDb = wx.cloud.database()
 
 type Consultant = {
@@ -32,6 +33,10 @@ Page({
     isConsultant: false,
     loading: false,
     submitting: false
+  },
+
+  goBack() {
+    wx.navigateBack()
   },
 
   formatTimeAgo(date: any) {

@@ -1,7 +1,10 @@
 <!--pages/editName/editName.wxml-->
 <view class="container">
 
-<view class="title">修改昵称</view>
+<view class="page-header">
+  <view class="back-btn" bindtap="goBack">‹</view>
+  <text class="page-title">修改昵称</text>
+</view>
 
 <input 
   class="input"

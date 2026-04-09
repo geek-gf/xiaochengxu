@@ -5,8 +5,8 @@
   <text class="title">机小智智友会</text>
 </view>
 
-<!-- 列表内容（不要 scroll-view！） -->
-<view class="content">
+<!-- 列表内容 -->
+<view class="content" style="padding-top: {{contentPaddingTop}}px;">
   <block wx:for="{{postList}}" wx:key="_id">
     
     <view class="card" bindtap="goPostDetail" data-id="{{item._id}}">

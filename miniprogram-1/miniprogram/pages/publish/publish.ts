@@ -2,6 +2,10 @@ Page({
     data: {
       content: ''
     },
+
+    goBack() {
+      wx.navigateBack()
+    },
   
     onInput(e: any) {
       this.setData({

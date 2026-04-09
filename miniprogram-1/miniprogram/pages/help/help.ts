@@ -1,3 +1,4 @@
+export {}
 const helpDb = wx.cloud.database()
 
 type HelpRequest = {
@@ -135,5 +136,10 @@ Page({
 
   goPublishHelp() {
     wx.navigateTo({ url: '/pages/publishHelp/publishHelp' })
+  },
+
+  goDetail(e: any) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: `/pages/helpDetail/helpDetail?id=${id}` })
   }
 })
