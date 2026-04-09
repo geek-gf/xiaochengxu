@@ -1,3 +1,4 @@
+export {}
 const squareDb = wx.cloud.database()
 type Post = {
   content: string
@@ -12,6 +13,8 @@ Page({
         pageSize: 10,
         loading: false,
         noMore: false,
+        statusBarHeight: 0,
+        contentPaddingTop: 0,
       },
       formatTimeAgo(date: any) {
         const now = Date.now()
@@ -29,11 +32,14 @@ Page({
         return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
       },
   onLoad() {
-    this.getPosts(false)
     const windowInfo = wx.getWindowInfo()
-    this.setData({
-        statusBarHeight: windowInfo.statusBarHeight
-      })
+    const statusBarHeight = windowInfo.statusBarHeight
+    // header is 140rpx tall; 140rpx = 140/750 * screenWidth px
+    const headerRpxHeight = 140
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(headerRpxHeight * rpxToPx)
+    this.setData({ statusBarHeight, contentPaddingTop })
+    this.getPosts(false)
   },
 
   onShow() {
@@ -56,7 +62,8 @@ Page({
 
   async getPosts(isLoadMore = false) {
 
-    if (this.data.loading || this.data.noMore) return
+    if (this.data.loading) return
+    if (isLoadMore && this.data.noMore) return
   
     this.setData({ loading: true })
   

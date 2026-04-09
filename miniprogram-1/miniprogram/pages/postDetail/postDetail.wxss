@@ -18,6 +18,15 @@
   z-index: 999;
 }
 
+.back-btn {
+  position: absolute;
+  left: 24rpx;
+  font-size: 60rpx;
+  color: #fff;
+  line-height: 1;
+  padding: 0 10rpx;
+}
+
 .title {
   color: #fff;
   font-size: 36rpx;

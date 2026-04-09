@@ -1,3 +1,4 @@
+export {}
 const postDetailDb = wx.cloud.database()
 
 type Post = {
@@ -40,6 +41,10 @@ Page({
     if (diff < 2592000) return Math.floor(diff / 86400) + '天前'
     const d = new Date(date)
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+  },
+
+  goBack() {
+    wx.navigateBack()
   },
 
   onLoad(options: any) {

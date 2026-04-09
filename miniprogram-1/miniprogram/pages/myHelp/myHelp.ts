@@ -1,3 +1,4 @@
+export {}
 const myHelpDb = wx.cloud.database()
 
 type HelpRequest = {
@@ -29,6 +30,15 @@ Page({
     if (diff < 2592000) return Math.floor(diff / 86400) + '天前'
     const d = new Date(date)
     return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+  },
+
+  goBack() {
+    wx.navigateBack()
+  },
+
+  goDetail(e: any) {
+    const id = e.currentTarget.dataset.id
+    wx.navigateTo({ url: `/pages/helpDetail/helpDetail?id=${id}` })
   },
 
   onLoad() {

@@ -1,6 +1,31 @@
 /* pages/publishHelp/publishHelp.wxss */
 .container {
-  padding: 40rpx 30rpx;
+  padding: 0 30rpx 40rpx;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  height: 100rpx;
+  margin-bottom: 10rpx;
+  position: relative;
+}
+
+.back-btn {
+  font-size: 60rpx;
+  color: #333;
+  line-height: 1;
+  padding: 0 10rpx;
+  position: absolute;
+  left: 0;
+}
+
+.page-title {
+  flex: 1;
+  text-align: center;
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
 }
 
 .form-group {

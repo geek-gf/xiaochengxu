@@ -2,6 +2,10 @@ Page({
     data: {
       nickName: ''
     },
+
+    goBack() {
+      wx.navigateBack()
+    },
   
     onLoad() {
       const userInfo = wx.getStorageSync('userInfo')

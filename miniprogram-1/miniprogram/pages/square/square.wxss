@@ -34,7 +34,9 @@
 .content {
     width: 100%;
     padding-left: 30rpx;
-
+    padding-right: 30rpx;
+    padding-bottom: 40rpx;
+    box-sizing: border-box;
   }
 /* 卡片 */
 .card {
@@ -42,9 +44,7 @@
      border-radius:24rpx;
      padding:25rpx;
      width: 100%;
-     margin-bottom:0rpx;
-     margin-left: 0px;
-     margin-right: 50px;
+     margin-bottom: 20rpx;
      box-shadow:0 10rpx 25rpx rgba(0,0,0,0.06);
 }
  /* 用户行 */

@@ -5,6 +5,17 @@
   padding-bottom: 130rpx;
 }
 
+.back-btn {
+  position: fixed;
+  top: 20rpx;
+  left: 24rpx;
+  font-size: 60rpx;
+  color: #fff;
+  line-height: 1;
+  padding: 0 10rpx;
+  z-index: 999;
+}
+
 .profile-card {
   background: linear-gradient(135deg, #1677ff, #69a1ff);
   padding: 60rpx 30rpx 40rpx;

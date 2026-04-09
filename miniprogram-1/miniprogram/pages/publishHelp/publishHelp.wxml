@@ -1,4 +1,9 @@
 <view class="container">
+  <view class="page-header">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text class="page-title">发布求助</text>
+  </view>
+
   <view class="form-group">
     <text class="label">求助标题</text>
     <input

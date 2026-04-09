@@ -6,6 +6,10 @@ Page({
     description: ''
   },
 
+  goBack() {
+    wx.navigateBack()
+  },
+
   onTitleInput(e: any) {
     this.setData({ title: e.detail.value })
   },

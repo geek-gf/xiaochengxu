@@ -1,6 +1,11 @@
 <!--pages/publish/publish.wxml-->
 <view class="container">
 
+<view class="page-header">
+  <view class="back-btn" bindtap="goBack">‹</view>
+  <text class="page-title">发帖</text>
+</view>
+
 <textarea 
   placeholder="说点什么吧..."
   bindinput="onInput"

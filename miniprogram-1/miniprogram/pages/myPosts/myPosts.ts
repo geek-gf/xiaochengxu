@@ -1,3 +1,4 @@
+export {}
 const myPostsDb = wx.cloud.database()
 
 type Post = {
@@ -113,6 +114,10 @@ Page({
     }
 
     this.setData({ loading: false })
+  },
+
+  goBack() {
+    wx.navigateBack()
   },
 
   goPostDetail(e: any) {

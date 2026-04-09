@@ -9,7 +9,7 @@
     </view>
 
     <block wx:for="{{list}}" wx:key="_id">
-      <view class="card">
+      <view class="card" bindtap="goDetail" data-id="{{item._id}}">
         <!-- 状态标签 + 发布者 -->
         <view class="card-top">
           <view class="user-row">
