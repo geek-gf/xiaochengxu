@@ -138,6 +138,20 @@ Page({
   },
 
   goPublish() {
+    const userInfo = wx.getStorageSync('userInfo')
+    if (!userInfo || !userInfo.isVerified) {
+      wx.showModal({
+        title: '需要认证',
+        content: '发帖功能需要完成个人信息认证，请前往"我的"页面完成认证',
+        confirmText: '去认证',
+        success: (res) => {
+          if (res.confirm) {
+            wx.switchTab({ url: '/pages/profile/profile' })
+          }
+        }
+      })
+      return
+    }
     wx.navigateTo({
       url: '/pages/publish/publish'
     })

@@ -2,8 +2,10 @@ Page({
     data: {
       userInfo: {
         avatarUrl: '',
-        nickName: ''
+        nickName: '',
+        isVerified: false
       },
+      statusBarHeight: 0
     },
     goEditName() {
         wx.navigateTo({
@@ -11,9 +13,9 @@ Page({
         })
       },
     onLoad() {
-      // 从本地缓存拿用户信息
+      const windowInfo = wx.getWindowInfo()
+      this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
       const userInfo = wx.getStorageSync('userInfo')
-  
       if (userInfo) {
         this.setData({ userInfo })
       }
@@ -71,7 +73,9 @@ Page({
       },
   
     goAuth() {
-      wx.showToast({ title: '开发中', icon: 'none' })
+      wx.navigateTo({
+        url: '/pages/verify/verify'
+      })
     },
   
     goMyPosts() {
@@ -81,9 +85,11 @@ Page({
     },
     onShow() {
         const userInfo = wx.getStorageSync('userInfo')
-        this.setData({
-          userInfo
-        })
+        if (userInfo) {
+          this.setData({ userInfo })
+        } else {
+          this.setData({ userInfo: { avatarUrl: '', nickName: '', isVerified: false } })
+        }
       },
     goHelp() {
       wx.navigateTo({

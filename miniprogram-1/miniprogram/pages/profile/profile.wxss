@@ -48,11 +48,34 @@ page {
   margin-bottom: 20rpx;
 }
 
+/* 昵称行 */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.menu-item-inline {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+}
+
 /* 昵称 */
 .nickname {
   color: #000000;
   font-size: 36rpx;
   font-weight: bold;
+}
+
+/* 已认证标签（头像旁） */
+.verified-tag {
+  background: #1677ff;
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
 }
 
 /* 菜单区域 */
@@ -74,6 +97,23 @@ page {
   align-items: center;
 
   font-size: 30rpx;
+}
+
+/* 右侧区域 */
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+/* 已认证标签（菜单内） */
+.verified-label {
+  background: #e6f7ff;
+  color: #1677ff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
 }
 
 /* 右箭头 */

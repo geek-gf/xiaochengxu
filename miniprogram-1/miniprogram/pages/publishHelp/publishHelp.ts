@@ -3,11 +3,17 @@ const publishHelpDb = wx.cloud.database()
 Page({
   data: {
     title: '',
-    description: ''
+    description: '',
+    statusBarHeight: 0
   },
 
   goBack() {
     wx.navigateBack()
+  },
+
+  onLoad() {
+    const windowInfo = wx.getWindowInfo()
+    this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
   },
 
   onTitleInput(e: any) {
@@ -34,6 +40,11 @@ Page({
     const userInfo = wx.getStorageSync('userInfo')
     if (!userInfo) {
       wx.showToast({ title: '请先登录', icon: 'none' })
+      return
+    }
+
+    if (!userInfo.isVerified) {
+      wx.showToast({ title: '请先完成认证', icon: 'none' })
       return
     }
 

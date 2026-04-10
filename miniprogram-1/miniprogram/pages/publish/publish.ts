@@ -1,10 +1,16 @@
 Page({
     data: {
-      content: ''
+      content: '',
+      statusBarHeight: 0
     },
 
     goBack() {
       wx.navigateBack()
+    },
+
+    onLoad() {
+      const windowInfo = wx.getWindowInfo()
+      this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
     },
   
     onInput(e: any) {
@@ -27,6 +33,14 @@ Page({
       if (!userInfo) {
         wx.showToast({
           title: '请先登录',
+          icon: 'none'
+        })
+        return
+      }
+
+      if (!userInfo.isVerified) {
+        wx.showToast({
+          title: '请先完成认证',
           icon: 'none'
         })
         return

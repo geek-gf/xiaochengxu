@@ -1,0 +1,86 @@
+<view class="container">
+  <view class="page-header" style="padding-top: {{statusBarHeight}}px;">
+    <view class="back-btn" bindtap="goBack">‹</view>
+    <text class="page-title">个人信息认证</text>
+  </view>
+
+  <!-- 已认证状态 -->
+  <view wx:if="{{isVerified}}" class="verified-banner">
+    <text class="verified-icon">✓</text>
+    <text class="verified-text">您已完成认证，可使用全部功能</text>
+  </view>
+
+  <!-- 未认证提示 -->
+  <view wx:else class="tip-card">
+    <text class="tip-text">请填写以下信息完成认证，认证后方可使用发帖、求助等功能</text>
+  </view>
+
+  <view class="form-card">
+    <view class="form-group">
+      <text class="label">真实姓名</text>
+      <input
+        class="input-box"
+        placeholder="请输入真实姓名"
+        bindinput="onInput"
+        data-field="trueName"
+        value="{{trueName}}"
+        disabled="{{isVerified}}"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="label">学院</text>
+      <input
+        class="input-box"
+        placeholder="请输入所在学院"
+        bindinput="onInput"
+        data-field="college"
+        value="{{college}}"
+        disabled="{{isVerified}}"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="label">年级</text>
+      <input
+        class="input-box"
+        placeholder="请输入年级（如：2023）"
+        bindinput="onInput"
+        data-field="grade"
+        value="{{grade}}"
+        disabled="{{isVerified}}"
+      />
+    </view>
+
+    <view class="form-group">
+      <text class="label">班级</text>
+      <input
+        class="input-box"
+        placeholder="请输入班级（如：1班）"
+        bindinput="onInput"
+        data-field="classNum"
+        value="{{classNum}}"
+        disabled="{{isVerified}}"
+      />
+    </view>
+
+    <view class="form-group form-group-last">
+      <text class="label">学号</text>
+      <input
+        class="input-box"
+        placeholder="请输入学号"
+        bindinput="onInput"
+        data-field="studentId"
+        value="{{studentId}}"
+        disabled="{{isVerified}}"
+      />
+    </view>
+  </view>
+
+  <button
+    wx:if="{{!isVerified}}"
+    class="submit-btn"
+    bindtap="submitVerify"
+    loading="{{submitting}}"
+  >提交认证</button>
+</view>

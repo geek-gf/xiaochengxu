@@ -1,29 +1,35 @@
 <view class="container">
-  <view class="page-header">
+  <view class="page-header" style="padding-top: {{statusBarHeight}}px;">
     <view class="back-btn" bindtap="goBack">‹</view>
     <text class="page-title">发布求助</text>
   </view>
 
-  <view class="form-group">
-    <text class="label">求助标题</text>
-    <input
-      class="input-box"
-      placeholder="请输入求助标题（简短描述你的问题）"
-      bindinput="onTitleInput"
-      value="{{title}}"
-      maxlength="50"
-    />
-  </view>
+  <view class="form-card">
+    <view class="form-group">
+      <text class="label">求助标题</text>
+      <input
+        class="input-box"
+        placeholder="请输入求助标题（简短描述你的问题）"
+        bindinput="onTitleInput"
+        value="{{title}}"
+        maxlength="50"
+      />
+    </view>
 
-  <view class="form-group">
-    <text class="label">详细描述</text>
-    <textarea
-      class="textarea-box"
-      placeholder="详细描述你的求助内容..."
-      bindinput="onDescInput"
-      value="{{description}}"
-      maxlength="500"
-    />
+    <view class="form-group">
+      <text class="label">详细描述</text>
+      <view class="textarea-wrap">
+        <textarea
+          class="textarea-box"
+          placeholder="详细描述你的求助内容..."
+          bindinput="onDescInput"
+          value="{{description}}"
+          maxlength="500"
+          auto-height
+        />
+        <view class="char-count">{{description ? description.length : 0}}/500</view>
+      </view>
+    </view>
   </view>
 
   <button class="submit-btn" bindtap="submitHelp">发布求助</button>
