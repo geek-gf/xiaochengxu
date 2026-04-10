@@ -95,5 +95,10 @@ Page({
       wx.navigateTo({
         url: '/pages/myHelp/myHelp'
       })
+    },
+    goMyQuestions() {
+      wx.navigateTo({
+        url: '/pages/myQuestions/myQuestions'
+      })
     }
   })

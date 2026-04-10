@@ -16,7 +16,12 @@ type HelpRequest = {
 Page({
   data: {
     list: [] as HelpRequest[],
-    loading: false
+    loading: false,
+    currentOpenid: '',
+    statusBarHeight: 0,
+    contentPaddingTop: 0,
+    scrollHeight: 0,
+    refresherTriggered: false
   },
 
   formatTimeAgo(date: any) {
@@ -42,6 +47,17 @@ Page({
   },
 
   onLoad() {
+    const windowInfo = wx.getWindowInfo()
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const headerRpxHeight = 140
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(headerRpxHeight * rpxToPx)
+    const scrollHeight = windowInfo.windowHeight - contentPaddingTop
+    this.setData({ statusBarHeight, contentPaddingTop, scrollHeight })
+    const userInfo = wx.getStorageSync('userInfo')
+    if (userInfo) {
+      this.setData({ currentOpenid: userInfo.openid || userInfo.nickName || '' })
+    }
     this.loadMyHelp()
   },
 
@@ -49,9 +65,10 @@ Page({
     this.loadMyHelp()
   },
 
-  async onPullDownRefresh() {
+  async onRefresherRefresh() {
+    this.setData({ refresherTriggered: true })
     await this.loadMyHelp()
-    wx.stopPullDownRefresh()
+    this.setData({ refresherTriggered: false })
   },
 
   async loadMyHelp() {
@@ -83,5 +100,28 @@ Page({
     }
 
     this.setData({ loading: false })
+  },
+
+  async endHelp(e: any) {
+    const id = e.currentTarget.dataset.id
+    wx.showModal({
+      title: '结束求助',
+      content: '确认要结束这个求助吗？结束后将标记为已完成。',
+      confirmText: '确认结束',
+      success: async (res) => {
+        if (!res.confirm) return
+        wx.showLoading({ title: '处理中...' })
+        try {
+          await myHelpDb.collection('helpRequest').doc(id).update({
+            data: { status: 'done' }
+          })
+          wx.showToast({ title: '已结束求助' })
+          await this.loadMyHelp()
+        } catch (err) {
+          wx.showToast({ title: '操作失败', icon: 'none' })
+        }
+        wx.hideLoading()
+      }
+    })
   }
 })

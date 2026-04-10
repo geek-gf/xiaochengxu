@@ -40,6 +40,11 @@
     <text class="arrow">></text>
   </view>
 
+  <view class="menu-item" bindtap="goMyQuestions">
+    <text>我的提问</text>
+    <text class="arrow">></text>
+  </view>
+
 </view>
 
 </view>

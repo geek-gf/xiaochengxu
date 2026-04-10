@@ -1,0 +1,50 @@
+<view class="page">
+  <view class="container1">
+    <view class="header" style="padding-top: {{statusBarHeight}}px;">
+      <view class="back-btn" bindtap="goBack">‹</view>
+      <text class="title">我的提问</text>
+    </view>
+
+    <scroll-view
+      class="content"
+      scroll-y="{{true}}"
+      lower-threshold="120"
+      refresher-enabled="true"
+      refresher-triggered="{{refresherTriggered}}"
+      bindrefresherrefresh="onRefresherRefresh"
+      style="margin-top: {{contentPaddingTop}}px; height: {{scrollHeight}}px;"
+    >
+      <view wx:if="{{list.length === 0 && !loading}}" class="empty-tip">
+        还没有提过问题，去咨询页面向专家提问吧~
+      </view>
+
+      <block wx:for="{{list}}" wx:key="_id">
+        <view class="card" bindtap="goConsultant" data-id="{{item.consultantId}}">
+          <!-- 专家信息 -->
+          <view class="consultant-row">
+            <text class="consultant-label">向专家提问：</text>
+            <text class="consultant-name">{{item.consultantName}}</text>
+            <text wx:if="{{item.consultantTitle}}" class="consultant-title">（{{item.consultantTitle}}）</text>
+          </view>
+
+          <!-- 提问内容 -->
+          <view class="q-content">{{item.content}}</view>
+
+          <!-- 回答 -->
+          <view wx:if="{{item.answer}}" class="answer-block">
+            <text class="answer-label">专家回答：</text>
+            <text class="answer-text">{{item.answer}}</text>
+          </view>
+          <view wx:else class="no-answer">暂未回答</view>
+
+          <!-- 时间 -->
+          <view class="q-time">{{item.timeAgo}}</view>
+        </view>
+      </block>
+
+      <view class="load-more">
+        <text wx:if="{{loading}}">加载中...</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

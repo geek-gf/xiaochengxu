@@ -16,7 +16,8 @@
         "pages/publishHelp/publishHelp",
         "pages/consultDetail/consultDetail",
         "pages/helpDetail/helpDetail",
-        "pages/verify/verify"
+        "pages/verify/verify",
+        "pages/myQuestions/myQuestions"
     ],
     "window": {
       "navigationBarTextStyle": "black",

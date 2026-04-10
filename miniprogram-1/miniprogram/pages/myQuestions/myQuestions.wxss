@@ -1,4 +1,4 @@
-/* pages/myPosts/myPosts.wxss */
+/* pages/myQuestions/myQuestions.wxss */
 .page {
   min-height: 100vh;
   background: #f5f6f7;
@@ -51,103 +51,71 @@
 .card {
   background: #fff;
   border-radius: 24rpx;
-  padding: 25rpx;
+  padding: 30rpx;
   margin-bottom: 20rpx;
   box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
 }
 
-.user-row {
+.consultant-row {
   display: flex;
   align-items: center;
-  margin-bottom: 15rpx;
+  flex-wrap: wrap;
+  margin-bottom: 16rpx;
 }
 
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-right: 20rpx;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.nickname {
-  font-size: 30rpx;
-  font-weight: 600;
-}
-
-.time {
-  font-size: 22rpx;
+.consultant-label {
+  font-size: 24rpx;
   color: #999;
-  margin-top: 6rpx;
 }
 
-.post-content {
-  font-size: 30rpx;
-  color: #333;
-  line-height: 1.7;
-  white-space: pre-wrap;
-}
-
-.empty-tip {
-  text-align: center;
-  color: #bbb;
+.consultant-name {
   font-size: 28rpx;
-  padding: 80rpx 0;
+  font-weight: bold;
+  color: #1677ff;
 }
 
-.load-more {
-  text-align: center;
-  color: #999;
-  font-size: 26rpx;
-  padding: 20rpx 0;
+.consultant-title {
+  font-size: 24rpx;
+  color: #888;
+  margin-left: 4rpx;
 }
 
-.card {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 25rpx;
-  margin-bottom: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(0,0,0,0.06);
-}
-
-.user-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 15rpx;
-}
-
-.avatar {
-  width: 80rpx;
-  height: 80rpx;
-  border-radius: 50%;
-  margin-right: 20rpx;
-}
-
-.user-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.nickname {
+.q-content {
   font-size: 30rpx;
-  font-weight: 600;
+  color: #222;
+  line-height: 1.6;
+  margin-bottom: 16rpx;
 }
 
-.time {
-  font-size: 22rpx;
-  color: #999;
-  margin-top: 6rpx;
+.answer-block {
+  background: #f0f7ff;
+  border-left: 6rpx solid #1677ff;
+  padding: 16rpx 20rpx;
+  border-radius: 8rpx;
+  margin-bottom: 16rpx;
 }
 
-.post-content {
-  font-size: 30rpx;
+.answer-label {
+  font-size: 24rpx;
+  color: #1677ff;
+  font-weight: bold;
+}
+
+.answer-text {
+  font-size: 28rpx;
   color: #333;
-  line-height: 1.7;
-  white-space: pre-wrap;
+  line-height: 1.6;
+}
+
+.no-answer {
+  font-size: 24rpx;
+  color: #bbb;
+  margin-bottom: 16rpx;
+}
+
+.q-time {
+  font-size: 22rpx;
+  color: #bbb;
 }
 
 .empty-tip {
