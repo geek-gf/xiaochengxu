@@ -1,3 +1,4 @@
+export {}
 const verifyDb = wx.cloud.database()
 
 Page({
@@ -26,6 +27,37 @@ Page({
         classNum: userInfo.classNum || '',
         studentId: userInfo.studentId || ''
       })
+    } else if (userInfo && userInfo.openid) {
+      // 本地缓存未标记已认证，从云端同步确认
+      verifyDb.collection('users')
+        .where({ openid: userInfo.openid })
+        .get()
+        .then((res: any) => {
+          if (res.data.length > 0 && res.data[0].isVerified) {
+            const user = res.data[0]
+            const updatedUserInfo = {
+              ...userInfo,
+              isVerified: true,
+              trueName: user.trueName || '',
+              college: user.college || '',
+              grade: user.grade || '',
+              classNum: user.classNum || '',
+              studentId: user.studentId || ''
+            }
+            wx.setStorageSync('userInfo', updatedUserInfo)
+            this.setData({
+              isVerified: true,
+              trueName: user.trueName || '',
+              college: user.college || '',
+              grade: user.grade || '',
+              classNum: user.classNum || '',
+              studentId: user.studentId || ''
+            })
+          }
+        })
+        .catch((err: any) => {
+          console.error('从云端获取认证状态失败', err)
+        })
     }
   },
 
@@ -59,6 +91,10 @@ Page({
     }
     if (!studentId.trim()) {
       wx.showToast({ title: '请填写学号', icon: 'none' })
+      return
+    }
+    if (!/^\d+$/.test(studentId.trim())) {
+      wx.showToast({ title: '学号应为纯数字', icon: 'none' })
       return
     }
 
