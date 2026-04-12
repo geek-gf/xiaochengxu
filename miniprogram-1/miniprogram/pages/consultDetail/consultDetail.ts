@@ -160,6 +160,7 @@ Page({
           content,
           askerName: userInfo.nickName,
           askerAvatar: userInfo.avatarUrl,
+          askerOpenid: userInfo.openid || '',
           answer: '',
           createTime: new Date()
         }

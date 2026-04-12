@@ -1,63 +1,73 @@
 <view class="page">
-  <view class="header" style="padding-top: {{statusBarHeight}}px;">
-    <text class="title">求助广场</text>
-  </view>
-
-  <view class="content">
-    <view wx:if="{{list.length === 0 && !loading}}" class="empty-tip">
-      暂无求助，成为第一个发布的人吧~
+  <view class="container1">
+    <view class="header" style="padding-top: {{statusBarHeight}}px;">
+      <text class="title">求助广场</text>
     </view>
 
-    <block wx:for="{{list}}" wx:key="_id">
-      <view class="card" bindtap="goDetail" data-id="{{item._id}}">
-        <!-- 状态标签 + 发布者 -->
-        <view class="card-top">
-          <view class="user-row">
-            <image class="avatar" src="{{item.publisherAvatar}}" mode="aspectFill"></image>
-            <text class="publisher-name">{{item.publisherName}}</text>
-          </view>
-          <view class="status-tag status-{{item.status}}">
-            <text wx:if="{{item.status === 'pending'}}">待接受</text>
-            <text wx:elif="{{item.status === 'ongoing'}}">进行中</text>
-            <text wx:else>已完成</text>
-          </view>
-        </view>
-
-        <!-- 标题 -->
-        <view class="help-title">{{item.title}}</view>
-
-        <!-- 描述 -->
-        <view class="help-desc">{{item.description}}</view>
-
-        <!-- 时间 -->
-        <view class="help-time">{{item.timeAgo}}</view>
-
-        <!-- 操作按钮 -->
-        <view class="btn-row">
-          <!-- pending 且非本人 → 接下求助 -->
-          <view
-            wx:if="{{item.status === 'pending' && item.publisherId !== currentOpenid}}"
-            class="btn btn-accept"
-            bindtap="acceptHelp"
-            data-id="{{item._id}}"
-          >接下求助</view>
-
-          <!-- ongoing 且当前用户是接受者 → 标记完成 -->
-          <view
-            wx:if="{{item.status === 'ongoing' && item.acceptorId === currentOpenid}}"
-            class="btn btn-done"
-            bindtap="completeHelp"
-            data-id="{{item._id}}"
-          >标记完成</view>
-        </view>
+    <scroll-view
+      class="content"
+      scroll-y="{{true}}"
+      lower-threshold="120"
+      refresher-enabled="true"
+      refresher-triggered="{{refresherTriggered}}"
+      bindrefresherrefresh="onRefresherRefresh"
+      style="margin-top: {{contentPaddingTop}}px; height: {{scrollHeight}}px;"
+    >
+      <view wx:if="{{list.length === 0 && !loading}}" class="empty-tip">
+        暂无求助，成为第一个发布的人吧~
       </view>
-    </block>
 
-    <view class="load-more">
-      <text wx:if="{{loading}}">加载中...</text>
-    </view>
+      <block wx:for="{{list}}" wx:key="_id">
+        <view class="card" bindtap="goDetail" data-id="{{item._id}}">
+          <!-- 状态标签 + 发布者 -->
+          <view class="card-top">
+            <view class="user-row">
+              <image class="avatar" src="{{item.publisherAvatar}}" mode="aspectFill"></image>
+              <text class="publisher-name">{{item.publisherName}}</text>
+            </view>
+            <view class="status-tag status-{{item.status}}">
+              <text wx:if="{{item.status === 'pending'}}">待接受</text>
+              <text wx:elif="{{item.status === 'ongoing'}}">进行中</text>
+              <text wx:else>已完成</text>
+            </view>
+          </view>
+
+          <!-- 标题 -->
+          <view class="help-title">{{item.title}}</view>
+
+          <!-- 描述 -->
+          <view class="help-desc">{{item.description}}</view>
+
+          <!-- 时间 -->
+          <view class="help-time">{{item.timeAgo}}</view>
+
+          <!-- 操作按钮 -->
+          <view class="btn-row">
+            <!-- pending 且非本人 → 接下求助 -->
+            <view
+              wx:if="{{item.status === 'pending' && item.publisherId !== currentOpenid}}"
+              class="btn btn-accept"
+              bindtap="acceptHelp"
+              data-id="{{item._id}}"
+            >接下求助</view>
+
+            <!-- ongoing 且当前用户是接受者 → 标记完成 -->
+            <view
+              wx:if="{{item.status === 'ongoing' && item.acceptorId === currentOpenid}}"
+              class="btn btn-done"
+              bindtap="completeHelp"
+              data-id="{{item._id}}"
+            >标记完成</view>
+          </view>
+        </view>
+      </block>
+
+      <view class="load-more">
+        <text wx:if="{{loading}}">加载中...</text>
+      </view>
+    </scroll-view>
+
+    <!-- 悬浮发布按钮 -->
+    <view class="publish-btn" bindtap="goPublishHelp">+</view>
   </view>
-
-  <!-- 悬浮发布按钮 -->
-  <view class="publish-btn" bindtap="goPublishHelp">+</view>
 </view>

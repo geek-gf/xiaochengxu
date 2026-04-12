@@ -19,7 +19,10 @@ Page({
     list: [] as HelpRequest[],
     loading: false,
     currentOpenid: '',
-    statusBarHeight: 0
+    statusBarHeight: 0,
+    contentPaddingTop: 0,
+    scrollHeight: 0,
+    refresherTriggered: false
   },
 
   formatTimeAgo(date: any) {
@@ -37,7 +40,12 @@ Page({
 
   onLoad() {
     const windowInfo = wx.getWindowInfo()
-    this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const headerRpxHeight = 140
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(headerRpxHeight * rpxToPx)
+    const scrollHeight = windowInfo.windowHeight - contentPaddingTop
+    this.setData({ statusBarHeight, contentPaddingTop, scrollHeight })
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo) {
       this.setData({ currentOpenid: userInfo.openid || '' })
@@ -49,9 +57,10 @@ Page({
     this.loadList()
   },
 
-  async onPullDownRefresh() {
+  async onRefresherRefresh() {
+    this.setData({ refresherTriggered: true })
     await this.loadList()
-    wx.stopPullDownRefresh()
+    this.setData({ refresherTriggered: false })
   },
 
   async loadList() {

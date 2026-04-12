@@ -4,17 +4,23 @@
   background: #f5f6f7;
 }
 
+.container1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
 .header {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 100rpx;
+  height: 140rpx;
   background: linear-gradient(135deg, #1677ff, #69a1ff);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
-  padding-bottom: 20rpx;
   z-index: 999;
 }
 
@@ -25,7 +31,12 @@
 }
 
 .content {
-  padding: 120rpx 30rpx 160rpx;
+  width: 100%;
+  padding-left: 30rpx;
+  padding-right: 30rpx;
+  padding-bottom: 160rpx;
+  box-sizing: border-box;
+  overflow-y: hidden;
 }
 
 .card {

@@ -17,7 +17,11 @@ Page({
     loading: false,
     noMore: false,
     page: 0,
-    pageSize: 10
+    pageSize: 10,
+    statusBarHeight: 0,
+    contentPaddingTop: 0,
+    scrollHeight: 0,
+    refresherTriggered: false
   },
 
   formatTimeAgo(date: any) {
@@ -34,6 +38,13 @@ Page({
   },
 
   onLoad() {
+    const windowInfo = wx.getWindowInfo()
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const headerRpxHeight = 140
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(headerRpxHeight * rpxToPx)
+    const scrollHeight = windowInfo.windowHeight - contentPaddingTop
+    this.setData({ statusBarHeight, contentPaddingTop, scrollHeight })
     this.loadPosts(false)
   },
 
@@ -41,9 +52,10 @@ Page({
     this.loadPosts(false)
   },
 
-  async onPullDownRefresh() {
+  async onRefresherRefresh() {
+    this.setData({ refresherTriggered: true })
     await this.loadPosts(false)
-    wx.stopPullDownRefresh()
+    this.setData({ refresherTriggered: false })
   },
 
   onReachBottom() {
