@@ -148,7 +148,7 @@ Page({
               title: '登录成功',
             });
             wx.switchTab({
-                url: '/pages/square/square'
+                url: '/pages/profile/profile'
               });
           }
         });
