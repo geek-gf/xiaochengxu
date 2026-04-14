@@ -119,6 +119,7 @@ Page({
             })
         } catch (dbErr) {
           console.error('更新用户认证状态失败', dbErr)
+          wx.showToast({ title: '认证成功，但云端同步失败', icon: 'none', duration: 2500 })
         }
 
         this.setData({ isVerified: true })
