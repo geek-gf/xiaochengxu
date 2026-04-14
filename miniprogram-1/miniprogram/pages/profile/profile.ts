@@ -92,6 +92,7 @@ Page({
             wx.hideLoading()
             wx.showToast({ title: '登录成功', icon: 'success' })
           } catch (err) {
+            console.error('登录失败', err)
             wx.hideLoading()
             wx.showToast({ title: '登录失败，请重试', icon: 'none' })
           }

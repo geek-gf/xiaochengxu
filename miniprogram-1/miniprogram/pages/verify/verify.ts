@@ -110,6 +110,10 @@ Page({
           }
         } catch (dupErr) {
           console.error('重复绑定检查失败', dupErr)
+          wx.hideLoading()
+          wx.showToast({ title: '认证失败，请稍后重试', icon: 'none' })
+          this.setData({ submitting: false })
+          return
         }
 
         // 认证成功，检查是否为专家
