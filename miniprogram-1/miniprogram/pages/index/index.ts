@@ -39,22 +39,32 @@ Page({
             const result = res.result as { openid: string };
             const openid = result.openid;
       
-            const db = wx.cloud.database();
-            const dbRes = await db.collection('users')
-              .where({ openid })
-              .get();
+            try {
+              const db = wx.cloud.database();
+              const dbRes = await db.collection('users')
+                .where({ openid })
+                .get();
       
-            if (dbRes.data.length > 0) {
+              if (dbRes.data.length > 0) {
                 const user = dbRes.data[0];
-
-                this.setData({
-                  userInfo: {
-                    avatarUrl: user.avatarUrl,
-                    nickName: user.nickName
-                  }
-                });
-      
-              wx.setStorageSync('userInfo', user);
+                // 恢复完整用户信息（包括认证状态、专家身份等）
+                const userInfo = {
+                  avatarUrl: user.avatarUrl || '',
+                  nickName: user.nickName || '',
+                  openid: user.openid || openid,
+                  isVerified: user.isVerified || false,
+                  isExpert: user.isExpert || false,
+                  trueName: user.trueName || '',
+                  college: user.college || '',
+                  grade: user.grade || '',
+                  classNum: user.classNum || '',
+                  studentId: user.studentId || ''
+                };
+                this.setData({ userInfo });
+                wx.setStorageSync('userInfo', userInfo);
+              }
+            } catch (err: any) {
+              console.error('自动登录失败', err);
             }
           },
           fail: (err) => {

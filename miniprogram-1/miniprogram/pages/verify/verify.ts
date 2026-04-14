@@ -91,10 +91,30 @@ Page({
         .get()
 
       if (res.data.length > 0) {
-        // 认证成功
+        // 认证成功，检查是否为专家
+        let isExpert = false
+        let consultantId = ''
+        try {
+          const expertRes = await verifyDb.collection('consultant')
+            .where({ name: trueName.trim() })
+            .limit(1)
+            .get()
+          if (expertRes.data && expertRes.data.length > 0) {
+            isExpert = true
+            consultantId = (expertRes.data[0] as any)._id
+            // 将当前用户 openid 绑定到专家记录
+            await verifyDb.collection('consultant').doc(consultantId).update({
+              data: { openid: userInfo.openid }
+            })
+          }
+        } catch (expertErr) {
+          console.error('专家识别失败', expertErr)
+        }
+
         const updatedUserInfo = {
           ...userInfo,
           isVerified: true,
+          isExpert,
           trueName: trueName.trim(),
           college: college.trim(),
           grade: grade.trim(),
@@ -110,6 +130,7 @@ Page({
             .update({
               data: {
                 isVerified: true,
+                isExpert,
                 trueName: trueName.trim(),
                 college: college.trim(),
                 grade: grade.trim(),
@@ -124,10 +145,11 @@ Page({
 
         this.setData({ isVerified: true })
         wx.hideLoading()
-        wx.showToast({ title: '认证成功！' })
+        const successMsg = isExpert ? '认证成功，已识别为专家！' : '认证成功！'
+        wx.showToast({ title: successMsg, icon: 'success' })
         setTimeout(() => {
           wx.switchTab({ url: '/pages/profile/profile' })
-        }, 800)
+        }, 1200)
       } else {
         wx.hideLoading()
         wx.showModal({
@@ -137,9 +159,10 @@ Page({
           confirmText: '我知道了'
         })
       }
-    } catch (err) {
+    } catch (err: any) {
       wx.hideLoading()
-      wx.showToast({ title: '认证失败，请稍后重试', icon: 'none' })
+      const msg = (err && err.errMsg) ? err.errMsg : '认证失败，请稍后重试'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
 
     this.setData({ submitting: false })

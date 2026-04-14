@@ -68,6 +68,9 @@
     </scroll-view>
 
     <!-- 悬浮发布按钮 -->
-    <view class="publish-btn" bindtap="goPublishHelp">+</view>
+    <view class="publish-btn" bindtap="goPublishHelp">
+      <text class="publish-btn-icon">🆘</text>
+      <text class="publish-btn-text">求助</text>
+    </view>
   </view>
 </view>

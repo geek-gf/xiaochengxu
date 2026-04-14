@@ -84,21 +84,61 @@
      line-height:1.7;
      white-space:pre-wrap;
  }
+/* 操作行（点赞/评论） */
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+  margin-top: 20rpx;
+  padding-top: 16rpx;
+  border-top: 1rpx solid #f5f5f5;
+}
+
+.action-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.action-icon {
+  font-size: 32rpx;
+}
+
+.action-count {
+  font-size: 26rpx;
+  color: #999;
+}
+
+.action-item.liked .action-count {
+  color: #ff4d4f;
+}
+
 /* 悬浮按钮 */
 .publish-btn {
      position:fixed;
      right:40rpx;
      bottom:160rpx;
-     width:110rpx;
+     min-width:110rpx;
      height:110rpx;
-     border-radius:50%;
-     background:linear-gradient(135deg, #07c160, #3cd97a);
+     border-radius:55rpx;
+     background:linear-gradient(135deg, #1677ff, #69a1ff);
      color:#fff;
      display:flex;
+     flex-direction: column;
      align-items:center;
      justify-content:center;
-     font-size:50rpx;
-     border: 2rpx solid #f2f2f2;
+     box-shadow: 0 8rpx 24rpx rgba(22,119,255,0.45);
+     padding: 0 24rpx;
+     gap: 4rpx;
+}
+.publish-btn-icon {
+  font-size: 36rpx;
+  line-height: 1;
+}
+.publish-btn-text {
+  font-size: 22rpx;
+  color: #fff;
+  font-weight: bold;
 }
 .load-more {
     text-align: center;

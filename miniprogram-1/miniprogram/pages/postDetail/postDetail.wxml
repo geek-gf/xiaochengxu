@@ -16,6 +16,17 @@
       </view>
     </view>
     <view class="post-content">{{post.content}}</view>
+
+    <!-- 点赞区域 -->
+    <view class="like-row">
+      <view class="like-btn {{post.isLiked ? 'liked' : ''}}" bindtap="toggleLike">
+        <text class="like-icon">{{post.isLiked ? '❤️' : '🤍'}}</text>
+        <text class="like-count">{{post.likeCount || 0}} 赞</text>
+      </view>
+      <view class="comment-count-tag">
+        <text>💬 {{post.commentCount || 0}} 评论</text>
+      </view>
+    </view>
   </view>
 
   <!-- 评论区标题 -->

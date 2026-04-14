@@ -93,9 +93,10 @@ Page({
       }))
 
       this.setData({ list })
-    } catch (err) {
+    } catch (err: any) {
       console.error('loadList error:', err)
-      wx.showToast({ title: '加载失败', icon: 'none' })
+      const msg = (err && err.errMsg) ? err.errMsg : '加载失败，请稍后重试'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
     this.setData({ loading: false })
   },
@@ -132,8 +133,9 @@ Page({
       })
       wx.showToast({ title: '已接下求助' })
       await this.loadList()
-    } catch (err) {
-      wx.showToast({ title: '操作失败', icon: 'none' })
+    } catch (err: any) {
+      const msg = (err && err.errMsg) ? err.errMsg : '操作失败，请稍后重试'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
     wx.hideLoading()
   },
@@ -152,8 +154,9 @@ Page({
           })
           wx.showToast({ title: '已完成' })
           await this.loadList()
-        } catch (err) {
-          wx.showToast({ title: '操作失败', icon: 'none' })
+        } catch (err: any) {
+          const msg = (err && err.errMsg) ? err.errMsg : '操作失败，请稍后重试'
+          wx.showToast({ title: msg, icon: 'none', duration: 2500 })
         }
         wx.hideLoading()
       }

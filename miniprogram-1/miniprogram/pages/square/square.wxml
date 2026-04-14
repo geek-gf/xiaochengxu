@@ -18,10 +18,10 @@
 >
   <block wx:for="{{postList}}" wx:key="_id">
 
-    <view class="card" bindtap="goPostDetail" data-id="{{item._id}}">
+    <view class="card">
 
-      <!-- 用户信息 -->
-      <view class="user-row">
+      <!-- 用户信息（点击进入帖子详情） -->
+      <view class="user-row" bindtap="goPostDetail" data-id="{{item._id}}">
         <image class="avatar" src="{{item.avatarUrl}}" mode="aspectFill"></image>
 
         <view class="user-info">
@@ -30,9 +30,21 @@
         </view>
       </view>
 
-      <!-- 内容 -->
-      <view class="post-content">
+      <!-- 内容（点击进入帖子详情） -->
+      <view class="post-content" bindtap="goPostDetail" data-id="{{item._id}}">
         {{item.content}}
+      </view>
+
+      <!-- 点赞和评论数 -->
+      <view class="action-row">
+        <view class="action-item" bindtap="goPostDetail" data-id="{{item._id}}">
+          <text class="action-icon">💬</text>
+          <text class="action-count">{{item.commentCount || 0}}</text>
+        </view>
+        <view class="action-item {{item.isLiked ? 'liked' : ''}}" bindtap="toggleLike" data-id="{{item._id}}">
+          <text class="action-icon">{{item.isLiked ? '❤️' : '🤍'}}</text>
+          <text class="action-count">{{item.likeCount || 0}}</text>
+        </view>
       </view>
 
     </view>
@@ -48,7 +60,8 @@
 </scroll-view>
 <!-- 悬浮发布按钮 -->
 <view class="publish-btn" bindtap="goPublish">
-  +
+  <text class="publish-btn-icon">✏️</text>
+  <text class="publish-btn-text">发帖</text>
 </view>
 </view>
 </view>
