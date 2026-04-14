@@ -1,13 +1,24 @@
 Page({
     data: {
-      nickName: ''
+      nickName: '',
+      statusBarHeight: 0,
+      contentPaddingTop: 0
     },
 
     goBack() {
       wx.navigateBack()
     },
+
+    goSquare() {
+      wx.switchTab({ url: '/pages/square/square' })
+    },
   
     onLoad() {
+      const windowInfo = wx.getWindowInfo()
+      const statusBarHeight = windowInfo.statusBarHeight || 0
+      const rpxToPx = windowInfo.screenWidth / 750
+      const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx)
+      this.setData({ statusBarHeight, contentPaddingTop })
       const userInfo = wx.getStorageSync('userInfo')
       this.setData({
         nickName: userInfo.nickName || ''

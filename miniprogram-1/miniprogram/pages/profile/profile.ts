@@ -100,5 +100,32 @@ Page({
       wx.navigateTo({
         url: '/pages/myQuestions/myQuestions'
       })
+    },
+    async goExpertQA() {
+      const userInfo = wx.getStorageSync('userInfo')
+      if (!userInfo || !userInfo.openid) {
+        wx.showToast({ title: '请先登录', icon: 'none' })
+        return
+      }
+      wx.showLoading({ title: '验证中...' })
+      try {
+        const db = wx.cloud.database()
+        const res = await db.collection('consultant')
+          .where({ openid: userInfo.openid })
+          .limit(1)
+          .get()
+        wx.hideLoading()
+        if (res.data && res.data.length > 0) {
+          const consultant = res.data[0] as any
+          wx.navigateTo({
+            url: `/pages/expertAnswer/expertAnswer?consultantId=${consultant._id}`
+          })
+        } else {
+          wx.showToast({ title: '你不是专家，无法使用此功能', icon: 'none', duration: 2500 })
+        }
+      } catch (err) {
+        wx.hideLoading()
+        wx.showToast({ title: '验证失败，请稍后重试', icon: 'none' })
+      }
     }
   })

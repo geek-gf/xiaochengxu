@@ -17,7 +17,8 @@
         "pages/consultDetail/consultDetail",
         "pages/helpDetail/helpDetail",
         "pages/verify/verify",
-        "pages/myQuestions/myQuestions"
+        "pages/myQuestions/myQuestions",
+        "pages/expertAnswer/expertAnswer"
     ],
     "window": {
       "navigationBarTextStyle": "black",

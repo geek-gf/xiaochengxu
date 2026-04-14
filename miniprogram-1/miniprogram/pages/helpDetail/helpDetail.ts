@@ -20,11 +20,17 @@ Page({
     loading: false,
     currentOpenid: '',
     isPublisher: false,
-    submitting: false
+    submitting: false,
+    statusBarHeight: 0,
+    contentPaddingTop: 0
   },
 
   goBack() {
     wx.navigateBack()
+  },
+
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
   },
 
   formatTimeAgo(date: any) {
@@ -41,6 +47,11 @@ Page({
   },
 
   onLoad(options: any) {
+    const windowInfo = wx.getWindowInfo()
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx)
+    this.setData({ statusBarHeight, contentPaddingTop })
     const id = options.id
     const userInfo = wx.getStorageSync('userInfo')
     const currentOpenid = (userInfo && userInfo.openid) || ''

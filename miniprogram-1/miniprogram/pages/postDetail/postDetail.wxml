@@ -1,12 +1,13 @@
 <view class="page">
   <!-- 顶部 -->
-  <view class="header">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
     <view class="back-btn" bindtap="goBack">‹</view>
     <text class="title">帖子详情</text>
+    <view class="home-btn" bindtap="goSquare">广场</view>
   </view>
 
   <!-- 帖子内容 -->
-  <view class="post-card" wx:if="{{post}}">
+  <view class="post-card" style="margin-top: {{contentPaddingTop}}px;" wx:if="{{post}}">
     <view class="user-row">
       <image class="avatar" src="{{post.avatarUrl}}" mode="aspectFill"></image>
       <view class="user-info">

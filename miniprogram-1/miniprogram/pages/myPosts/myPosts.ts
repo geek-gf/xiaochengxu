@@ -132,6 +132,10 @@ Page({
     wx.navigateBack()
   },
 
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
+  },
+
   goPostDetail(e: any) {
     const postId = e.currentTarget.dataset.id
     wx.navigateTo({
