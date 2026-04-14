@@ -202,7 +202,7 @@ Page({
     const newLikedBy = liked
       ? (post.likedBy || []).filter((id: string) => id !== openid)
       : [...(post.likedBy || []), openid]
-    const newLikeCount = liked ? Math.max((post.likeCount || 1) - 1, 0) : (post.likeCount || 0) + 1
+    const newLikeCount = liked ? Math.max((post.likeCount || 0) - 1, 0) : (post.likeCount || 0) + 1
 
     // 乐观更新
     this.setData({
