@@ -15,8 +15,21 @@
     <text class="nickname-label">昵称：</text>
     <text class="value">{{userInfo.nickName}}</text>
   </view>
-  <view wx:if="{{userInfo.isVerified}}" class="verified-tag">已认证</view>
+  <view wx:if="{{userInfo.isExpert}}" class="expert-tag">专家</view>
+  <view wx:elif="{{userInfo.isVerified}}" class="verified-tag">已认证</view>
 </view>
+</view>
+
+<!-- 专家工作台（仅专家可见） -->
+<view wx:if="{{userInfo.isExpert}}" class="expert-card" bindtap="goExpertQA">
+  <view class="expert-card-left">
+    <text class="expert-card-icon">🎓</text>
+    <view class="expert-card-info">
+      <text class="expert-card-title">专家工作台</text>
+      <text class="expert-card-desc">管理并回答用户的提问</text>
+    </view>
+  </view>
+  <text class="expert-card-arrow">›</text>
 </view>
 
 <!-- 功能列表 -->
@@ -45,7 +58,7 @@
     <text class="arrow">></text>
   </view>
 
-  <view class="menu-item" bindtap="goExpertQA">
+  <view wx:if="{{!userInfo.isExpert}}" class="menu-item" bindtap="goExpertQA">
     <text>专家问答</text>
     <text class="arrow">></text>
   </view>

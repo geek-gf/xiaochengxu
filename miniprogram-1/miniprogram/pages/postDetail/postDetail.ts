@@ -8,6 +8,10 @@ type Post = {
   nickName: string
   createTime: Date
   timeAgo?: string
+  likeCount?: number
+  likedBy?: string[]
+  commentCount?: number
+  isLiked?: boolean
 }
 
 type Comment = {
@@ -29,7 +33,8 @@ Page({
     submitting: false,
     postId: '',
     statusBarHeight: 0,
-    contentPaddingTop: 0
+    contentPaddingTop: 0,
+    currentOpenid: ''
   },
 
   formatTimeAgo(date: any) {
@@ -58,7 +63,9 @@ Page({
     const statusBarHeight = windowInfo.statusBarHeight || 0
     const rpxToPx = windowInfo.screenWidth / 750
     const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx) + Math.round(20 * rpxToPx)
-    this.setData({ statusBarHeight, contentPaddingTop })
+    const userInfo = wx.getStorageSync('userInfo')
+    const currentOpenid = (userInfo && userInfo.openid) ? userInfo.openid : ''
+    this.setData({ statusBarHeight, contentPaddingTop, currentOpenid })
     const postId = options.postId
     this.setData({ postId })
     this.loadPost(postId)
@@ -76,10 +83,15 @@ Page({
         post.avatarUrl = tempUrl && tempUrl.startsWith('https') ? tempUrl : '/pages/images/1.png'
       }
       post.timeAgo = this.formatTimeAgo(post.createTime)
+      post.likeCount = post.likeCount || 0
+      post.likedBy = post.likedBy || []
+      post.commentCount = post.commentCount || 0
+      post.isLiked = post.likedBy.includes(this.data.currentOpenid)
       this.setData({ post })
-    } catch (err) {
+    } catch (err: any) {
       console.error('loadPost error:', err)
-      wx.showToast({ title: '帖子加载失败', icon: 'none' })
+      const msg = (err && err.errMsg) ? err.errMsg : '帖子加载失败'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
   },
 
@@ -114,8 +126,9 @@ Page({
       }))
 
       this.setData({ commentList: comments })
-    } catch (err) {
-      wx.showToast({ title: '评论加载失败', icon: 'none' })
+    } catch (err: any) {
+      const msg = (err && err.errMsg) ? err.errMsg : '评论加载失败'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
     this.setData({ loading: false })
   },
@@ -151,14 +164,79 @@ Page({
         }
       })
 
+      // 更新帖子评论计数
+      try {
+        await postDetailDb.collection('post').doc(this.data.postId).update({
+          data: { commentCount: postDetailDb.command.inc(1) }
+        })
+        if (this.data.post) {
+          this.setData({ 'post.commentCount': (this.data.post.commentCount || 0) + 1 })
+        }
+      } catch (countErr) {
+        console.error('更新评论数失败', countErr)
+      }
+
       this.setData({ commentContent: '' })
       wx.showToast({ title: '评论成功' })
       await this.loadComments(this.data.postId)
-    } catch (err) {
-      wx.showToast({ title: '评论失败', icon: 'none' })
+    } catch (err: any) {
+      const msg = (err && err.errMsg) ? err.errMsg : '评论失败，请稍后重试'
+      wx.showToast({ title: msg, icon: 'none', duration: 2500 })
     }
 
     wx.hideLoading()
     this.setData({ submitting: false })
+  },
+
+  async toggleLike() {
+    const userInfo = wx.getStorageSync('userInfo')
+    if (!userInfo || !userInfo.openid) {
+      wx.showToast({ title: '请先登录', icon: 'none' })
+      return
+    }
+    const openid = userInfo.openid
+    const post = this.data.post
+    if (!post) return
+
+    const liked = (post.likedBy || []).includes(openid)
+    const newLikedBy = liked
+      ? (post.likedBy || []).filter((id: string) => id !== openid)
+      : [...(post.likedBy || []), openid]
+    const newLikeCount = liked ? Math.max((post.likeCount || 0) - 1, 0) : (post.likeCount || 0) + 1
+
+    // 乐观更新
+    this.setData({
+      'post.likedBy': newLikedBy,
+      'post.likeCount': newLikeCount,
+      'post.isLiked': !liked
+    })
+
+    try {
+      const db = postDetailDb
+      if (liked) {
+        await db.collection('post').doc(post._id).update({
+          data: {
+            likedBy: db.command.pull(openid),
+            likeCount: db.command.inc(-1)
+          }
+        })
+      } else {
+        await db.collection('post').doc(post._id).update({
+          data: {
+            likedBy: db.command.push([openid]),
+            likeCount: db.command.inc(1)
+          }
+        })
+      }
+    } catch (err: any) {
+      // 回滚
+      this.setData({
+        'post.likedBy': post.likedBy,
+        'post.likeCount': post.likeCount,
+        'post.isLiked': liked
+      })
+      const msg = (err && err.errMsg) ? err.errMsg : '操作失败'
+      wx.showToast({ title: msg, icon: 'none' })
+    }
   }
 })

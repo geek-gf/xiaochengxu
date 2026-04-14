@@ -78,6 +78,61 @@ page {
   border-radius: 20rpx;
 }
 
+/* 专家标签（头像旁） */
+.expert-tag {
+  background: linear-gradient(135deg, #fa8c16, #ffd666);
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 专家工作台卡片 */
+.expert-card {
+  margin: 0 20rpx 20rpx;
+  background: linear-gradient(135deg, #fa8c16, #ffa940);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6rpx 20rpx rgba(250,140,22,0.35);
+}
+
+.expert-card-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.expert-card-icon {
+  font-size: 50rpx;
+}
+
+.expert-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.expert-card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.expert-card-desc {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.85);
+}
+
+.expert-card-arrow {
+  font-size: 48rpx;
+  color: rgba(255,255,255,0.8);
+  font-weight: bold;
+}
+
 /* 菜单区域 */
 .menu {
   margin-top: -40rpx; /* 👈 卡片浮起来效果 */

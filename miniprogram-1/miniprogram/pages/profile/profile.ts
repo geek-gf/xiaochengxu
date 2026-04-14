@@ -3,7 +3,8 @@ Page({
       userInfo: {
         avatarUrl: '',
         nickName: '',
-        isVerified: false
+        isVerified: false,
+        isExpert: false
       },
       statusBarHeight: 0
     },
@@ -88,7 +89,7 @@ Page({
         if (userInfo) {
           this.setData({ userInfo })
         } else {
-          this.setData({ userInfo: { avatarUrl: '', nickName: '', isVerified: false } })
+          this.setData({ userInfo: { avatarUrl: '', nickName: '', isVerified: false, isExpert: false } })
         }
       },
     goHelp() {
