@@ -31,6 +31,245 @@ page {
     font-size:40rpx;
     font-weight:bold;
 }
+
+/* 登录区域 */
+.login-section {
+  margin-top: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx 40rpx;
+}
+
+.login-avatar-btn {
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin-bottom: 30rpx;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.login-avatar-btn::after {
+  border: none;
+}
+
+.login-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 6rpx solid #e0e0e0;
+}
+
+.login-nickname-wrap {
+  width: 100%;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+}
+
+.login-nickname-input {
+  width: 100%;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1677ff, #69a1ff);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 50rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  margin-bottom: 24rpx;
+}
+
+.login-tip {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}
+
+.head{
+    height: 350rpx; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 头像 */
+.avatar {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  border: 6rpx solid #fff;
+  margin-bottom: 20rpx;
+}
+
+/* 昵称行 */
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.menu-item-inline {
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+}
+
+/* 昵称 */
+.nickname {
+  color: #000000;
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+/* 已认证标签（头像旁） */
+.verified-tag {
+  background: #1677ff;
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 专家标签（头像旁） */
+.expert-tag {
+  background: linear-gradient(135deg, #fa8c16, #ffd666);
+  color: #fff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 专家工作台卡片 */
+.expert-card {
+  margin: 0 20rpx 20rpx;
+  background: linear-gradient(135deg, #fa8c16, #ffa940);
+  border-radius: 20rpx;
+  padding: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6rpx 20rpx rgba(250,140,22,0.35);
+}
+
+.expert-card-left {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.expert-card-icon {
+  font-size: 50rpx;
+}
+
+.expert-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+}
+
+.expert-card-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #fff;
+}
+
+.expert-card-desc {
+  font-size: 24rpx;
+  color: rgba(255,255,255,0.85);
+}
+
+.expert-card-arrow {
+  font-size: 48rpx;
+  color: rgba(255,255,255,0.8);
+  font-weight: bold;
+}
+
+/* 菜单区域 */
+.menu {
+  margin-top: -40rpx; /* 👈 卡片浮起来效果 */
+  padding: 20rpx 0;
+}
+
+/* 单项 */
+.menu-item {
+  background: #fff;
+  border-radius: 20rpx;
+  width: 100%;
+  padding: 30rpx;
+  margin-bottom: 20rpx;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 30rpx;
+}
+
+/* 右侧区域 */
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+/* 已认证标签（菜单内） */
+.verified-label {
+  background: #e6f7ff;
+  color: #1677ff;
+  font-size: 22rpx;
+  font-weight: bold;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+}
+
+/* 右箭头 */
+.arrow {
+  color: #999;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 顶部 */
+.header {
+    position: fixed;   /* 🔥 关键 */
+    top: 0;
+    left: 0;
+    width: 100%;
+  
+    height: 180rpx;
+    background: linear-gradient(135deg, #1677ff, #69a1ff);
+  
+    display: flex;
+    align-items: center;
+    padding-left: 30rpx;
+  
+    z-index: 999;
+}
+.title {
+    color:#fff;
+    font-size:40rpx;
+    font-weight:bold;
+}
 .head{
     height: 350rpx; 
     display: flex;

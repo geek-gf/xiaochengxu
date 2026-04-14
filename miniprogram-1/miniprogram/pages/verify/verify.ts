@@ -91,6 +91,27 @@ Page({
         .get()
 
       if (res.data.length > 0) {
+        // 检查该学生信息是否已被其他账号绑定
+        try {
+          const dupRes = await verifyDb.collection('users')
+            .where({ studentId: studentId.trim() })
+            .get()
+          const otherBinding = dupRes.data.find((u: any) => u.openid !== userInfo.openid && u.isVerified)
+          if (otherBinding) {
+            wx.hideLoading()
+            wx.showModal({
+              title: '认证失败',
+              content: '该学生信息已被其他账号绑定，每个学生信息只能绑定一个账号',
+              showCancel: false,
+              confirmText: '我知道了'
+            })
+            this.setData({ submitting: false })
+            return
+          }
+        } catch (dupErr) {
+          console.error('重复绑定检查失败', dupErr)
+        }
+
         // 认证成功，检查是否为专家
         let isExpert = false
         let consultantId = ''
