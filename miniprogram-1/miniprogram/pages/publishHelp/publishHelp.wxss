@@ -1,44 +1,64 @@
 /* pages/publishHelp/publishHelp.wxss */
-.container {
+.page {
   min-height: 100vh;
   background: #f5f6f7;
 }
 
-.page-header {
+.container1 {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 140rpx;
   background: linear-gradient(135deg, #1677ff, #69a1ff);
   display: flex;
-  align-items: flex-end;
-  padding-bottom: 20rpx;
-  padding-left: 20rpx;
-  padding-right: 20rpx;
-  position: relative;
-  min-height: 100rpx;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
 }
 
 .back-btn {
+  position: absolute;
+  left: 24rpx;
   font-size: 60rpx;
   color: #fff;
   line-height: 1;
   padding: 0 10rpx;
-  position: absolute;
-  left: 20rpx;
-  bottom: 16rpx;
 }
 
-.page-title {
-  flex: 1;
-  text-align: center;
+.home-btn {
+  position: absolute;
+  right: 24rpx;
+  font-size: 26rpx;
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
+.title {
+  color: #fff;
   font-size: 36rpx;
   font-weight: bold;
-  color: #fff;
+}
+
+.form-area {
+  padding: 20rpx 24rpx 60rpx;
 }
 
 .form-card {
   background: #fff;
   border-radius: 24rpx;
-  margin: 30rpx 24rpx 0;
   padding: 30rpx;
   box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  margin-bottom: 0;
 }
 
 .form-group {
@@ -100,7 +120,7 @@
   color: #fff;
   border-radius: 40rpx;
   font-size: 32rpx;
-  margin: 40rpx 24rpx 60rpx;
+  margin: 40rpx 0 0;
   height: 96rpx;
   line-height: 96rpx;
 }

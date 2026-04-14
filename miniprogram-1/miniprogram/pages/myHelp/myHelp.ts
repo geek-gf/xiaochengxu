@@ -41,6 +41,10 @@ Page({
     wx.navigateBack()
   },
 
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
+  },
+
   goDetail(e: any) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({ url: `/pages/helpDetail/helpDetail?id=${id}` })

@@ -1,16 +1,24 @@
 Page({
     data: {
       content: '',
-      statusBarHeight: 0
+      statusBarHeight: 0,
+      contentPaddingTop: 0
     },
 
     goBack() {
       wx.navigateBack()
     },
 
+    goSquare() {
+      wx.switchTab({ url: '/pages/square/square' })
+    },
+
     onLoad() {
       const windowInfo = wx.getWindowInfo()
-      this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
+      const statusBarHeight = windowInfo.statusBarHeight || 0
+      const rpxToPx = windowInfo.screenWidth / 750
+      const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx)
+      this.setData({ statusBarHeight, contentPaddingTop })
     },
   
     onInput(e: any) {

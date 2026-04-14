@@ -3,6 +3,7 @@
     <view class="header" style="padding-top: {{statusBarHeight}}px;">
       <view class="back-btn" bindtap="goBack">‹</view>
       <text class="title">我的帖子</text>
+      <view class="home-btn" bindtap="goSquare">广场</view>
     </view>
 
     <scroll-view

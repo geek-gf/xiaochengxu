@@ -27,7 +27,9 @@ Page({
     commentContent: '',
     loading: false,
     submitting: false,
-    postId: ''
+    postId: '',
+    statusBarHeight: 0,
+    contentPaddingTop: 0
   },
 
   formatTimeAgo(date: any) {
@@ -47,7 +49,16 @@ Page({
     wx.navigateBack()
   },
 
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
+  },
+
   onLoad(options: any) {
+    const windowInfo = wx.getWindowInfo()
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx) + Math.round(20 * rpxToPx)
+    this.setData({ statusBarHeight, contentPaddingTop })
     const postId = options.postId
     this.setData({ postId })
     this.loadPost(postId)

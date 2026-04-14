@@ -3,6 +3,7 @@ const verifyDb = wx.cloud.database()
 Page({
   data: {
     statusBarHeight: 0,
+    contentPaddingTop: 0,
     trueName: '',
     college: '',
     grade: '',
@@ -14,7 +15,10 @@ Page({
 
   onLoad() {
     const windowInfo = wx.getWindowInfo()
-    this.setData({ statusBarHeight: windowInfo.statusBarHeight || 0 })
+    const statusBarHeight = windowInfo.statusBarHeight || 0
+    const rpxToPx = windowInfo.screenWidth / 750
+    const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx)
+    this.setData({ statusBarHeight, contentPaddingTop })
 
     const userInfo = wx.getStorageSync('userInfo')
     if (userInfo && userInfo.isVerified) {
@@ -31,6 +35,10 @@ Page({
 
   goBack() {
     wx.navigateBack()
+  },
+
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
   },
 
   onInput(e: any) {
@@ -111,12 +119,14 @@ Page({
             })
         } catch (dbErr) {
           console.error('更新用户认证状态失败', dbErr)
-          wx.showToast({ title: '认证成功，但云端同步失败，请重进页面', icon: 'none', duration: 3000 })
         }
 
         this.setData({ isVerified: true })
         wx.hideLoading()
         wx.showToast({ title: '认证成功！' })
+        setTimeout(() => {
+          wx.switchTab({ url: '/pages/profile/profile' })
+        }, 800)
       } else {
         wx.hideLoading()
         wx.showModal({

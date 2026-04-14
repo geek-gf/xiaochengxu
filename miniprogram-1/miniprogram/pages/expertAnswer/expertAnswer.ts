@@ -1,5 +1,5 @@
 export {}
-const consultDetailDb = wx.cloud.database()
+const expertAnswerDb = wx.cloud.database()
 
 type Consultant = {
   _id: string
@@ -27,12 +27,8 @@ Page({
   data: {
     consultant: null as Consultant | null,
     questions: [] as Question[],
-    questionContent: '',
     consultantId: '',
-    currentOpenid: '',
-    isConsultant: false,
     loading: false,
-    submitting: false,
     statusBarHeight: 0,
     contentPaddingTop: 0
   },
@@ -65,29 +61,31 @@ Page({
     const contentPaddingTop = statusBarHeight + Math.round(140 * rpxToPx)
     this.setData({ statusBarHeight, contentPaddingTop })
     const consultantId = options.consultantId
-    const userInfo = wx.getStorageSync('userInfo')
-    const currentOpenid = (userInfo && userInfo.openid) || ''
-    this.setData({ consultantId, currentOpenid })
-    this.loadConsultant(consultantId, currentOpenid)
+    this.setData({ consultantId })
+    this.loadConsultant(consultantId)
     this.loadQuestions(consultantId)
   },
 
-  async loadConsultant(consultantId: string, currentOpenid: string) {
+  onShow() {
+    if (this.data.consultantId) {
+      this.loadQuestions(this.data.consultantId)
+    }
+  },
+
+  async loadConsultant(consultantId: string) {
     try {
-      const res = await consultDetailDb.collection('consultant').doc(consultantId).get()
+      const res = await expertAnswerDb.collection('consultant').doc(consultantId).get()
       let consultant = res.data as Consultant
 
       if (consultant.avatar && consultant.avatar.startsWith('cloud://')) {
         const tempRes = await wx.cloud.getTempFileURL({ fileList: [consultant.avatar] })
         const tempFile = tempRes.fileList[0]
         const tempUrl = tempFile && tempFile.tempFileURL
-        consultant.avatar = tempUrl && tempUrl.startsWith('https') ? tempUrl : '/pages/images/1.png'
+        consultant.avatar = tempUrl && tempUrl.startsWith('https') ? tempUrl : '/images/1.png'
       }
 
-      const isConsultant = !!(currentOpenid && currentOpenid === consultant.openid)
-      this.setData({ consultant, isConsultant })
+      this.setData({ consultant })
     } catch (err) {
-      console.error('loadConsultant error:', err)
       wx.showToast({ title: '加载专家信息失败', icon: 'none' })
     }
   },
@@ -95,7 +93,7 @@ Page({
   async loadQuestions(consultantId: string) {
     this.setData({ loading: true })
     try {
-      const res = await consultDetailDb.collection('question')
+      const res = await expertAnswerDb.collection('question')
         .where({ consultantId })
         .orderBy('createTime', 'desc')
         .limit(50)
@@ -112,7 +110,7 @@ Page({
           ...q,
           askerAvatar: urlMap[q.askerAvatar] && urlMap[q.askerAvatar].startsWith('https')
             ? urlMap[q.askerAvatar]
-            : '/pages/images/1.png'
+            : '/images/1.png'
         }))
       }
 
@@ -120,7 +118,7 @@ Page({
         ...q,
         timeAgo: this.formatTimeAgo(q.createTime),
         showAnswerInput: false,
-        answerDraft: ''
+        answerDraft: q.answer || ''
       }))
 
       this.setData({ questions })
@@ -128,64 +126,6 @@ Page({
       wx.showToast({ title: '加载问题失败', icon: 'none' })
     }
     this.setData({ loading: false })
-  },
-
-  onQuestionInput(e: any) {
-    this.setData({ questionContent: e.detail.value })
-  },
-
-  async submitQuestion() {
-    const content = this.data.questionContent.trim()
-    if (!content) {
-      wx.showToast({ title: '问题不能为空', icon: 'none' })
-      return
-    }
-
-    const userInfo = wx.getStorageSync('userInfo')
-    if (!userInfo) {
-      wx.showToast({ title: '请先登录', icon: 'none' })
-      return
-    }
-
-    if (!userInfo.isVerified) {
-      wx.showModal({
-        title: '需要认证',
-        content: '提问功能需要完成个人信息认证，请前往"我的"页面完成认证',
-        confirmText: '去认证',
-        success: (res) => {
-          if (res.confirm) {
-            wx.switchTab({ url: '/pages/profile/profile' })
-          }
-        }
-      })
-      return
-    }
-
-    this.setData({ submitting: true })
-    wx.showLoading({ title: '提交中...' })
-
-    try {
-      await consultDetailDb.collection('question').add({
-        data: {
-          consultantId: this.data.consultantId,
-          content,
-          askerName: userInfo.nickName,
-          askerAvatar: userInfo.avatarUrl,
-          askerOpenid: userInfo.openid || '',
-          answer: '',
-          createTime: new Date()
-        }
-      })
-
-      this.setData({ questionContent: '' })
-      wx.showToast({ title: '提问成功' })
-      await this.loadQuestions(this.data.consultantId)
-    } catch (err) {
-      wx.showToast({ title: '提问失败', icon: 'none' })
-    }
-
-    wx.hideLoading()
-    this.setData({ submitting: false })
   },
 
   toggleAnswerInput(e: any) {
@@ -212,7 +152,7 @@ Page({
 
     wx.showLoading({ title: '提交中...' })
     try {
-      await consultDetailDb.collection('question').doc(question._id).update({
+      await expertAnswerDb.collection('question').doc(question._id).update({
         data: { answer }
       })
       wx.showToast({ title: '回答成功' })

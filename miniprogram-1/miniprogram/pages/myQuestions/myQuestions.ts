@@ -42,6 +42,10 @@ Page({
     wx.navigateBack()
   },
 
+  goSquare() {
+    wx.switchTab({ url: '/pages/square/square' })
+  },
+
   goConsultant(e: any) {
     const id = e.currentTarget.dataset.id
     wx.navigateTo({ url: `/pages/consultDetail/consultDetail?consultantId=${id}` })

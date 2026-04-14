@@ -33,6 +33,16 @@
   padding: 0 10rpx;
 }
 
+.home-btn {
+  position: absolute;
+  right: 24rpx;
+  font-size: 26rpx;
+  color: #fff;
+  background: rgba(255,255,255,0.2);
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+}
+
 .title {
   color: #fff;
   font-size: 36rpx;

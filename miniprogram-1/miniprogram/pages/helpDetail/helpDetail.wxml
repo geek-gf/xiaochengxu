@@ -1,11 +1,12 @@
 <view class="page">
   <!-- 顶部 -->
-  <view class="header">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
     <view class="back-btn" bindtap="goBack">‹</view>
     <text class="title">求助详情</text>
+    <view class="home-btn" bindtap="goSquare">广场</view>
   </view>
 
-  <view class="content" wx:if="{{item}}">
+  <view class="content" style="margin-top: {{contentPaddingTop}}px;" wx:if="{{item}}">
     <!-- 发布者信息 -->
     <view class="publisher-row">
       <image class="avatar" src="{{item.publisherAvatar}}" mode="aspectFill"></image>

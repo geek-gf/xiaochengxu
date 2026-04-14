@@ -1,8 +1,11 @@
-<view class="container">
-  <view class="page-header" style="padding-top: {{statusBarHeight}}px;">
+<view class="page">
+  <view class="container1">
+  <view class="header" style="padding-top: {{statusBarHeight}}px;">
     <view class="back-btn" bindtap="goBack">‹</view>
-    <text class="page-title">发布求助</text>
+    <text class="title">发布求助</text>
+    <view class="home-btn" bindtap="goSquare">广场</view>
   </view>
+  <view class="form-area" style="margin-top: {{contentPaddingTop}}px;">
 
   <view class="form-card">
     <view class="form-group">
@@ -33,4 +36,6 @@
   </view>
 
   <button class="submit-btn" bindtap="submitHelp">发布求助</button>
+  </view>
+  </view>
 </view>
