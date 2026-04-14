@@ -31,6 +31,73 @@ page {
     font-size:40rpx;
     font-weight:bold;
 }
+
+/* 登录区域 */
+.login-section {
+  margin-top: 200rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 40rpx 40rpx;
+}
+
+.login-avatar-btn {
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin-bottom: 30rpx;
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.login-avatar-btn::after {
+  border: none;
+}
+
+.login-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  border-radius: 50%;
+  border: 6rpx solid #e0e0e0;
+}
+
+.login-nickname-wrap {
+  width: 100%;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 0 30rpx;
+  margin-bottom: 30rpx;
+  height: 90rpx;
+  display: flex;
+  align-items: center;
+}
+
+.login-nickname-input {
+  width: 100%;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #1677ff, #69a1ff);
+  color: #fff;
+  font-size: 32rpx;
+  font-weight: bold;
+  border-radius: 50rpx;
+  height: 90rpx;
+  line-height: 90rpx;
+  margin-bottom: 24rpx;
+}
+
+.login-tip {
+  font-size: 24rpx;
+  color: #999;
+  text-align: center;
+}
+
 .head{
     height: 350rpx; 
     display: flex;
