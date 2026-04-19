@@ -29,6 +29,13 @@
             </view>
 
             </view>
+
+            <!-- 微信授权登录：手机端弹出本地微信授权，PC端弹出扫码框 -->
+            <button bindtap="handleWechatLogin" class="wechat-login-btn">
+                微信授权登录
+            </button>
+
+            <!-- 手动填写昵称头像后登录 -->
             <button bindtap="handleLogin" class="login-btn">
                 登录
             </button>
