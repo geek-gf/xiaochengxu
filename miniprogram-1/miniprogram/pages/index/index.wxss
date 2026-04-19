@@ -61,3 +61,21 @@ page {
 .nickname-input {
   flex: 1;
 }
+
+.wechat-login-btn {
+  margin-top: 40rpx;
+  width: 80%;
+  background-color: #07c160;
+  color: #fff;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+}
+
+.login-btn {
+  margin-top: 24rpx;
+  width: 80%;
+  background-color: #f0f0f0;
+  color: #333;
+  border-radius: 48rpx;
+  font-size: 32rpx;
+}

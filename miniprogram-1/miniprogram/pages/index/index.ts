@@ -110,7 +110,61 @@ Page({
       })
     },
   
-    // 登录按钮
+    // 微信授权登录（手机：本地微信弹框授权；PC：微信桌面端自动弹出扫码框）
+    handleWechatLogin() {
+      const sysInfo = wx.getSystemInfoSync();
+      const platform = sysInfo.platform; // 'ios' | 'android' | 'windows' | 'mac' | 'devtools'
+      // devtools 模拟手机端，不弹扫码提示
+      const isPC = platform === 'windows' || platform === 'mac';
+
+      if (isPC) {
+        wx.showToast({
+          title: '请用手机扫码授权',
+          icon: 'none',
+          duration: 2000
+        });
+      }
+
+      wx.getUserProfile({
+        desc: '用于获取您的微信昵称和头像',
+        success: (res) => {
+          const { avatarUrl, nickName } = res.userInfo;
+
+          wx.cloud.callFunction({
+            name: 'login',
+            success: async (loginRes) => {
+              if (!loginRes.result) {
+                console.error('没有获取到 result');
+                return;
+              }
+              const result = loginRes.result as { openid: string };
+              const openid = result.openid;
+
+              await this.saveUser(openid, { avatarUrl, nickName });
+
+              const userInfo = { avatarUrl, nickName, openid };
+              wx.setStorageSync('userInfo', userInfo);
+              this.setData({ userInfo });
+
+              wx.showToast({ title: '登录成功' });
+              setTimeout(() => {
+                wx.switchTab({ url: '/pages/square/square' });
+              }, 1500);
+            },
+            fail: (err) => {
+              console.error('云函数调用失败', err);
+              wx.showToast({ title: '登录失败，请重试', icon: 'none' });
+            }
+          });
+        },
+        fail: (err) => {
+          console.error('微信授权失败', err);
+          wx.showToast({ title: '授权失败，请重试', icon: 'none' });
+        }
+      });
+    },
+
+    // 登录按钮（手动填写昵称/头像）
     handleLogin() {
         const userInfo = this.data.userInfo;
       
