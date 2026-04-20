@@ -217,5 +217,15 @@ Page({
         wx.hideLoading()
         wx.showToast({ title: '验证失败，请稍后重试', icon: 'none' })
       }
+    },
+    openAuthorizeSetting() {
+      wx.openAppAuthorizeSetting({
+        success(res) {
+          console.log(res)
+        },
+        fail(err) {
+          console.error('打开授权设置失败', err)
+        }
+      })
     }
   })
