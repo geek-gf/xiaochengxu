@@ -7,10 +7,7 @@ Page({
         isExpert: false,
         openid: ''
       },
-      statusBarHeight: 0,
-      loginAvatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
-      loginNickName: '',
-      loginLoading: false
+      statusBarHeight: 0
     },
     goEditName() {
         wx.navigateTo({
@@ -24,86 +21,6 @@ Page({
       if (userInfo) {
         this.setData({ userInfo })
       }
-    },
-    onChooseAvatar(e: any) {
-      const { avatarUrl } = e.detail
-      const cloudPath = 'avatar/' + Date.now() + '.png'
-      wx.cloud.uploadFile({
-        cloudPath,
-        filePath: avatarUrl,
-        success: (res) => {
-          this.setData({ loginAvatarUrl: res.fileID })
-        },
-        fail: () => {
-          this.setData({ loginAvatarUrl: avatarUrl })
-        }
-      })
-    },
-    onNickNameInput(e: any) {
-      this.setData({ loginNickName: e.detail.value })
-    },
-    async handleLogin() {
-      const { loginNickName, loginAvatarUrl } = this.data
-      if (!loginNickName.trim()) {
-        wx.showToast({ title: '请输入昵称', icon: 'none' })
-        return
-      }
-      this.setData({ loginLoading: true })
-      wx.showLoading({ title: '登录中...' })
-      wx.cloud.callFunction({
-        name: 'login',
-        success: async (res) => {
-          try {
-            const result = res.result as { openid: string }
-            const openid = result.openid
-            const db = wx.cloud.database()
-            const dbRes = await db.collection('users').where({ openid }).get()
-            const userInfo: any = {
-              avatarUrl: loginAvatarUrl,
-              nickName: loginNickName.trim(),
-              openid,
-              isVerified: false,
-              isExpert: false
-            }
-            if (dbRes.data.length > 0) {
-              const user = dbRes.data[0] as any
-              userInfo.isVerified = user.isVerified || false
-              userInfo.isExpert = user.isExpert || false
-              userInfo.trueName = user.trueName || ''
-              userInfo.college = user.college || ''
-              userInfo.grade = user.grade || ''
-              userInfo.classNum = user.classNum || ''
-              userInfo.studentId = user.studentId || ''
-              await db.collection('users').doc(user._id).update({
-                data: { avatarUrl: loginAvatarUrl, nickName: loginNickName.trim() }
-              })
-            } else {
-              await db.collection('users').add({
-                data: {
-                  openid,
-                  nickName: loginNickName.trim(),
-                  avatarUrl: loginAvatarUrl,
-                  createTime: new Date()
-                }
-              })
-            }
-            wx.setStorageSync('userInfo', userInfo)
-            this.setData({ userInfo })
-            wx.hideLoading()
-            wx.showToast({ title: '登录成功', icon: 'success' })
-          } catch (err) {
-            console.error('登录失败', err)
-            wx.hideLoading()
-            wx.showToast({ title: '登录失败，请重试', icon: 'none' })
-          }
-          this.setData({ loginLoading: false })
-        },
-        fail: () => {
-          wx.hideLoading()
-          wx.showToast({ title: '登录失败，请重试', icon: 'none' })
-          this.setData({ loginLoading: false })
-        }
-      })
     },
     changeAvatar() {
         wx.showActionSheet({

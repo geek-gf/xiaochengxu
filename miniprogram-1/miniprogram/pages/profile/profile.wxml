@@ -4,31 +4,11 @@
   <text class="title">机小智智友会</text>
 </view>
 
-<!-- 未登录时：显示登录区域 -->
-<view wx:if="{{!userInfo.openid}}" class="login-section">
-  <button class="login-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-    <image class="login-avatar" src="{{loginAvatarUrl}}" mode="aspectFill" />
-  </button>
-  <view class="login-nickname-wrap">
-    <input
-      class="login-nickname-input"
-      type="nickname"
-      placeholder="点击设置微信昵称"
-      value="{{loginNickName}}"
-      bindinput="onNickNameInput"
-    />
-  </view>
-  <button class="login-btn" bindtap="handleLogin" loading="{{loginLoading}}">微信登录 / 注册</button>
-  <text class="login-tip">登录后可使用个人信息认证及全部功能</text>
-</view>
-
-<!-- 已登录时：显示正常个人信息 -->
-<view wx:else>
 <!-- 顶部区域 -->
 <view class="head">
     <image 
   class="avatar" 
-  src="{{userInfo.avatarUrl}}" 
+  src="{{userInfo.avatarUrl || '/pages/images/1.png'}}" 
   bindtap="changeAvatar"
 />
 <view class="name-row">
@@ -90,7 +70,5 @@
   </view>
 
 </view>
-
-</view><!-- end wx:else -->
 
 </view>

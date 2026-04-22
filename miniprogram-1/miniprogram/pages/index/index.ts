@@ -1,57 +1,40 @@
 // index.ts
-// 获取应用实例
-interface UserInfo {
-    avatarUrl: string;
-    nickName: string;
-  }
 Page({
-    data: {
-      motto: '由甘凡开发，甘凡牛逼',
-      userInfo: {
-        avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
-        nickName: '',
-      },
-      hasUserInfo: false,
-      canIUseGetUserProfile: wx.canIUse('getUserProfile'),
-      canIUseNicknameComp: wx.canIUse('input.type.nickname'),
-    },
-    onLoad() {
-        const userInfo = wx.getStorageSync('userInfo');
-
-        if (userInfo) {
-          this.setData({
-            userInfo
-          });
-        } else {
-          // 没登录 → 自动拿 openid
-          this.autoLogin();
-        }
-      },
-      autoLogin() {
+  data: {
+    loading: false
+  },
+  onLoad() {
+    const userInfo = wx.getStorageSync('userInfo')
+    if (userInfo && userInfo.openid) {
+      wx.switchTab({ url: '/pages/square/square' })
+    }
+  },
+  handleWechatLogin() {
+    this.setData({ loading: true })
+    wx.openAppAuthorizeSetting({
+      complete: () => {
+        wx.showLoading({ title: '登录中...' })
         wx.cloud.callFunction({
           name: 'login',
           success: async (res) => {
-            if (!res.result) {
-              console.error('没有获取到 result');
-              return;
-            }
-      
-            const result = res.result as { openid: string };
-            const openid = result.openid;
-      
             try {
-              const db = wx.cloud.database();
-              const dbRes = await db.collection('users')
-                .where({ openid })
-                .get();
-      
+              const result = res.result as { openid: string }
+              const openid = result.openid
+              const db = wx.cloud.database()
+              const dbRes = await db.collection('users').where({ openid }).get()
+              let userInfo: any = {
+                avatarUrl: '/pages/images/1.png',
+                nickName: '微信用户',
+                openid,
+                isVerified: false,
+                isExpert: false
+              }
               if (dbRes.data.length > 0) {
-                const user = dbRes.data[0];
-                // 恢复完整用户信息（包括认证状态、专家身份等）
-                const userInfo = {
-                  avatarUrl: user.avatarUrl || '',
-                  nickName: user.nickName || '',
-                  openid: user.openid || openid,
+                const user = dbRes.data[0] as any
+                userInfo = {
+                  ...userInfo,
+                  avatarUrl: user.avatarUrl || '/pages/images/1.png',
+                  nickName: user.nickName || '微信用户',
                   isVerified: user.isVerified || false,
                   isExpert: user.isExpert || false,
                   trueName: user.trueName || '',
@@ -59,175 +42,34 @@ Page({
                   grade: user.grade || '',
                   classNum: user.classNum || '',
                   studentId: user.studentId || ''
-                };
-                this.setData({ userInfo });
-                wx.setStorageSync('userInfo', userInfo);
+                }
+              } else {
+                await db.collection('users').add({
+                  data: {
+                    openid,
+                    nickName: '微信用户',
+                    avatarUrl: '/pages/images/1.png',
+                    createTime: new Date()
+                  }
+                })
               }
-            } catch (err: any) {
-              console.error('自动登录失败', err);
+              wx.setStorageSync('userInfo', userInfo)
+              wx.hideLoading()
+              wx.switchTab({ url: '/pages/square/square' })
+            } catch (err) {
+              console.error('登录失败', err)
+              wx.hideLoading()
+              wx.showToast({ title: '登录失败，请重试', icon: 'none' })
             }
+            this.setData({ loading: false })
           },
-          fail: (err) => {
-            console.error('云函数调用失败', err);
-          }
-        });
-      },
-    // 点击头像
-    onChooseAvatar(e: any) {
-        const { avatarUrl } = e.detail
-      
-        const cloudPath = 'avatar/' + Date.now() + '.png'
-      
-        wx.cloud.uploadFile({
-          cloudPath,
-          filePath: avatarUrl,
-          success: res => {
-            const fileID = res.fileID
-      
-            const { nickName } = this.data.userInfo
-      
-            this.setData({
-              "userInfo.avatarUrl": fileID,
-              hasUserInfo: !!nickName && !!fileID
-            })
-      
-            console.log('上传成功：', fileID)
-          },
-          fail: err => {
-            console.error('上传失败：', err)
+          fail: () => {
+            wx.hideLoading()
+            wx.showToast({ title: '登录失败，请重试', icon: 'none' })
+            this.setData({ loading: false })
           }
         })
-      },
-  
-    // 输入昵称
-    onInputChange(e: any) {
-      const nickName = e.detail.value
-      const { avatarUrl } = this.data.userInfo
-  
-      this.setData({
-        "userInfo.nickName": nickName,
-        hasUserInfo: !!nickName && avatarUrl !== ''
-      })
-    },
-  
-    // 微信授权登录（手机：本地微信弹框授权；PC：微信桌面端自动弹出扫码框）
-    handleWechatLogin() {
-      const sysInfo = wx.getSystemInfoSync();
-      const platform = sysInfo.platform; // 'ios' | 'android' | 'windows' | 'mac' | 'devtools'
-      // devtools 模拟手机端，不弹扫码提示
-      const isPC = platform === 'windows' || platform === 'mac';
-
-      if (isPC) {
-        wx.showToast({
-          title: '请用手机扫码授权',
-          icon: 'none',
-          duration: 2000
-        });
       }
-
-      wx.getUserProfile({
-        desc: '用于获取您的微信昵称和头像',
-        success: (res) => {
-          const { avatarUrl, nickName } = res.userInfo;
-
-          wx.cloud.callFunction({
-            name: 'login',
-            success: async (loginRes) => {
-              if (!loginRes.result) {
-                console.error('没有获取到 result');
-                return;
-              }
-              const result = loginRes.result as { openid: string };
-              const openid = result.openid;
-
-              await this.saveUser(openid, { avatarUrl, nickName });
-
-              const userInfo = { avatarUrl, nickName, openid };
-              wx.setStorageSync('userInfo', userInfo);
-              this.setData({ userInfo });
-
-              wx.showToast({ title: '登录成功' });
-              setTimeout(() => {
-                wx.switchTab({ url: '/pages/square/square' });
-              }, 1500);
-            },
-            fail: (err) => {
-              console.error('云函数调用失败', err);
-              wx.showToast({ title: '登录失败，请重试', icon: 'none' });
-            }
-          });
-        },
-        fail: (err) => {
-          console.error('微信授权失败', err);
-          wx.showToast({ title: '授权失败，请重试', icon: 'none' });
-        }
-      });
-    },
-
-    // 登录按钮（手动填写昵称/头像）
-    handleLogin() {
-        const userInfo = this.data.userInfo;
-      
-        if (!userInfo.nickName) {
-          wx.showToast({
-            title: '请输入昵称',
-            icon: 'none'
-          });
-          return;
-        }
-       
-        wx.cloud.callFunction({
-          name: 'login',
-          success: async (res) => {
-            if (!res.result) {
-                console.error('没有获取到 result');
-                return;
-              }
-        
-            const result = res.result as { openid: string };
-            const openid = result.openid;
-      
-            console.log('openid:', openid);
-      
-            // 👉 存数据库
-            await this.saveUser(openid, userInfo);
-      
-            // 👉 本地缓存
-            wx.setStorageSync('userInfo', {
-              ...userInfo,
-              openid
-            });
-      
-            wx.showToast({
-              title: '登录成功',
-            });
-            wx.switchTab({
-                url: '/pages/square/square'
-              });
-          }
-        });
-      },
-      async saveUser(openid: string, userInfo: UserInfo) {
-        const db = wx.cloud.database();
-      
-        const res = await db.collection('users')
-          .where({ openid })
-          .get();
-      
-        if (res.data.length > 0) {
-          // 👉 已存在（老用户）
-          console.log('老用户');
-        } else {
-          // 👉 新用户（注册）
-          await db.collection('users').add({
-            data: {
-              openid,
-              nickName: userInfo.nickName,
-              avatarUrl: userInfo.avatarUrl,
-              createTime: new Date()
-            }
-          });
-          console.log('新用户已创建');
-        }
-      }
-  })
+    })
+  }
+})
